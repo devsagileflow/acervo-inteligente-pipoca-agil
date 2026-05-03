@@ -1,5 +1,11 @@
-import { Label } from "@/components/ui";
 import Image from "next/image";
+
+import { AprendaAgilidade } from "./aprenda-agilidade";
+import { CTAFooter } from "./cta-footer";
+import { Hero } from "./hero";
+import { Processo } from "./processo";
+import { YoutubeXTrilha } from "./youtube-x-trilha";
+import { Label } from "@/components/ui";
 
 export default function Home() {
   return (
@@ -64,6 +70,11 @@ export default function Home() {
           </a>
         </div>
       </main>
+      <Hero />
+      <AprendaAgilidade />
+      <Processo />
+      <YoutubeXTrilha />
+      <CTAFooter />
     </div>
   );
 }
