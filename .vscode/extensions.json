@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "ms-vscode.vscode-typescript-next",
+    "dbaeumer.vscode-eslint",
+    "vivaxy.vscode-conventional-commits",
+    "esbenp.prettier-vscode",
+    "Prisma.prisma",
+    "vitest.explorer"
+  ]
+}
