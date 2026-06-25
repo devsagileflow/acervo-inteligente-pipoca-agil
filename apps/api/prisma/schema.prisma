@@ -13,14 +13,15 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(ulid())
-  name          String
-  email         String
-  emailVerified Boolean   @default(false)
-  image         String?
-  role          Role[]
-  sessions      Session[]
-  accounts      Account[]
+  id              String           @id @default(ulid())
+  name            String
+  email           String
+  emailVerified   Boolean          @default(false)
+  image           String?
+  role            Role[]
+  sessions        Session[]
+  accounts        Account[]
+  analyticsEvents AnalyticsEvent[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -83,4 +84,26 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model AnalyticsEvent {
+  id          String    @id @default(ulid())
+  eventName   String // Click, PageView, etc.
+  pagePath    String // URL 
+  targetId    String? // ID of the target element, e.g., button ID, link ID, etc.
+  anonymousId String?
+  referrer    String? // e.g. previous page, search result, or external site that referred the traffic.
+  properties  Json? // Additional properties related to the event, stored as a JSON object.
+  occurredAt  DateTime?
+  userId      String?
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([eventName, createdAt])
+  @@index([pagePath, createdAt])
+  @@index([anonymousId, createdAt])
+  @@index([userId, createdAt])
+  @@map("analytics_event")
 }
