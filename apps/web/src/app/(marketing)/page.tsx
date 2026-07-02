@@ -5,6 +5,7 @@ import { YoutubeXTrilha } from "./youtube-x-trilha";
 import { AprendaAgilidade } from "./aprenda-agilidade";
 import { CTAFooter } from "./cta-footer";
 import { Processo } from "./processo";
+import { Reforco } from "./reforco";
 import { Label } from "@/components/ui";
 
 export default function Home() {
@@ -13,8 +14,9 @@ export default function Home() {
       <Hero />
       <YoutubeXTrilha /> 
       <Processo /> 
-      {/* <AprendaAgilidade /> */}
-      {/* <CTAFooter /> */}
+      <AprendaAgilidade />
+      <Reforco />
+      <CTAFooter />
     </>
   );
 }
