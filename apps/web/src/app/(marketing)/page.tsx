@@ -11,9 +11,9 @@ export default function Home() {
   return (
     <>
       <Hero />
-      {/* <YoutubeXTrilha /> */}
+      <YoutubeXTrilha /> 
+      <Processo /> 
       {/* <AprendaAgilidade /> */}
-      {/* <Processo /> */}
       {/* <CTAFooter /> */}
     </>
   );
