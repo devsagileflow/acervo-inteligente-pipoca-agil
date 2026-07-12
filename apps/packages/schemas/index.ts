@@ -1,3 +1,4 @@
+export * from "./analytics.api.schema";
 export * from "./user.api.schema";
 export * from "./user.schema";
 

@@ -1,6 +1,7 @@
 import mokker from "../../../public/img/Mokker.png";
 import bgImg from "../../../public/img/bg-reforço CTA.png";
 import Image from "next/image";
+import { CTAButton } from "./components/cta-button";
 
 export const Reforco = () => {
   return (
@@ -15,19 +16,7 @@ export const Reforco = () => {
                 QUER APRENDER AGILIDADE SEM PERDER TEMPO BUSCANDO CONTEÚDOS SOLTOS?
               </p>
               <p className="py-5 text-4xl">Comece por aqui!</p>
-              <p className="py-5">
-                <button
-                  type="button"
-                  className="group rounded-3xl bg-linear-to-r from-[#0F172A] to-[#6C3DBF] px-10 py-2 font-bold text-[#FBBF24] hover:text-[#6C3D8F]"
-                >
-                  <a
-                    href="#"
-                    className="h-full w-full rounded-3xl from-[#FFFFFF] to-[#FBBF24] group-hover:bg-linear-to-r"
-                  >
-                    EXPLORAR TRILHAS
-                  </a>
-                </button>
-              </p>
+              <CTAButton />
             </div>
           </div>
         </div>

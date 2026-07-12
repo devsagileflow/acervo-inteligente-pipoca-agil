@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { CTAButton } from "./components/cta-button";
 
 export const Hero = () => {
   return (
@@ -26,14 +27,7 @@ export const Hero = () => {
             aprendizado estruturadas.
           </p>
 
-          <div>
-            <button
-              type="button"
-              className="inline-flex items-center gap-3 rounded-[15px] border-r-2 border-b-2 border-l-2 border-[#0F172A] bg-gradient-to-r from-[#0F172A] to-[#6C3DBF] px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-[#FBBF24] shadow-[0_15px_40px_0_rgba(0,0,0,0.25)] transition hover:opacity-90"
-            >
-              Explorar trilhas
-            </button>
-          </div>
+          <CTAButton />
 
           <p className="text-base text-[#0F172A] sm:text-[20px]">
             Conteúdos organizados em trilhas |{" "}
