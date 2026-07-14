@@ -2,11 +2,11 @@
   "name": "fastify",
   "version": "1.0.0",
   "description": "",
-  "main": "server.ts",
+  "main": "dist/api/src/server.js",
   "scripts": {
     "dev": "tsx --watch src/server.ts",
     "build": "tsc --outDir dist/ && tsc-alias --outDir dist/",
-    "start": "node dist/src/server.js",
+    "start": "node dist/api/src/server.js",
     "postinstall": "prisma generate && npx prisma migrate deploy",
     "seed": "prisma db seed",
     "lint": "eslint . --ext .ts",
