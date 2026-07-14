@@ -40,23 +40,23 @@ export const auth = betterAuth({
     revokeSessionsOnPasswordReset: true,
     autoSignIn: true,
   },
-  socialProviders: {
-    google: {
-      enabled: Boolean(env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET),
-      clientId: env.GOOGLE_CLIENT_ID!,
-      clientSecret: env.GOOGLE_CLIENT_SECRET!,
-    },
-    github: {
-      enabled: Boolean(env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET),
-      clientId: env.GITHUB_CLIENT_ID!,
-      clientSecret: env.GITHUB_CLIENT_SECRET!,
-    },
-    linkedin: {
-      enabled: Boolean(env.LINKEDIN_CLIENT_ID && env.LINKEDIN_CLIENT_SECRET),
-      clientId: env.LINKEDIN_CLIENT_ID!,
-      clientSecret: env.LINKEDIN_CLIENT_SECRET!,
-    },
-  },
+  // socialProviders: {
+  //   google: {
+  //     enabled: Boolean(env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET),
+  //     clientId: env.GOOGLE_CLIENT_ID!,
+  //     clientSecret: env.GOOGLE_CLIENT_SECRET!,
+  //   },
+  //   github: {
+  //     enabled: Boolean(env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET),
+  //     clientId: env.GITHUB_CLIENT_ID!,
+  //     clientSecret: env.GITHUB_CLIENT_SECRET!,
+  //   },
+  //   linkedin: {
+  //     enabled: Boolean(env.LINKEDIN_CLIENT_ID && env.LINKEDIN_CLIENT_SECRET),
+  //     clientId: env.LINKEDIN_CLIENT_ID!,
+  //     clientSecret: env.LINKEDIN_CLIENT_SECRET!,
+  //   },
+  // },
   plugins: [
     openAPI({
       disableDefaultReference: env.NODE_ENV !== "development",
