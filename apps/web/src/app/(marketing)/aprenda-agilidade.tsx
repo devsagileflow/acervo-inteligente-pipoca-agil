@@ -12,9 +12,9 @@ export const AprendaAgilidade = () => {
                   className="group grid h-full w-full grid-cols-2 rounded-2xl bg-[#0F172A] px-10 py-3 text-left"
                 >
                   <p className="font-bold">PORQUE APRENDER AQUI E NÃO NO YOUTUBE?</p>
-                  <div className="absolute top-3 right-5 text-2xl font-bold">
-                    <p className="group-focus:hidden">▼</p>
-                    <p className="hidden group-focus:flex">▲</p>
+                  <div className="absolute top-3 right-5 text-2xl font-bold text-[#6C3DBF]">
+                    <p className="group-focus:hidden">⮟</p>
+                    <p className="hidden group-focus:flex">⮝</p>
                   </div>
                   <p className="col-span-2 hidden py-4 group-focus:flex">
                     Porque aqui você não precisa adivinhar o que estudar. Os conteúdos já estão
@@ -30,9 +30,9 @@ export const AprendaAgilidade = () => {
                   className="group grid h-full w-full grid-cols-2 rounded-2xl bg-[#0F172A] px-10 py-3 text-left"
                 >
                   <p className="font-bold">O QUE SÃO TRILHAS DE APRENDIZADO?</p>
-                  <div className="absolute top-3 right-5 text-2xl font-bold">
-                    <p className="group-focus:hidden">▼</p>
-                    <p className="hidden group-focus:flex">▲</p>
+                  <div className="absolute top-3 right-5 text-2xl font-bold text-[#6C3DBF]">
+                    <p className="group-focus:hidden">⮟</p>
+                    <p className="hidden group-focus:flex">⮝</p>
                   </div>
                   <p className="col-span-2 hidden py-4 group-focus:flex">
                     São sequências de conteúdos organizados para te ajudar a aprender com mais
@@ -47,9 +47,9 @@ export const AprendaAgilidade = () => {
                   className="group grid h-full w-full grid-cols-2 rounded-2xl bg-[#0F172A] px-10 py-3 text-left"
                 >
                   <p className="font-bold">PRECISO ME CADASTRAR PARA COMEÇAR?</p>
-                  <div className="absolute top-3 right-5 text-2xl font-bold">
-                    <p className="group-focus:hidden">▼</p>
-                    <p className="hidden group-focus:flex">▲</p>
+                  <div className="absolute top-3 right-5 text-2xl font-bold text-[#6C3DBF]">
+                    <p className="group-focus:hidden">⮟</p>
+                    <p className="hidden group-focus:flex">⮝</p>
                   </div>
                   <p className="col-span-2 hidden py-4 group-focus:flex">
                     Não. Você pode explorar as trilhas livremente e entender a proposta antes de
@@ -64,9 +64,9 @@ export const AprendaAgilidade = () => {
                   className="group grid h-full w-full grid-cols-2 rounded-2xl bg-[#0F172A] px-10 py-3 text-left"
                 >
                   <p className="font-bold">PRECISO PAGAR PARA USAR A PLATAFORMA?</p>
-                  <div className="absolute top-3 right-5 text-2xl font-bold">
-                    <p className="group-focus:hidden">▼</p>
-                    <p className="hidden group-focus:flex">▲</p>
+                  <div className="absolute top-3 right-5 text-2xl font-bold text-[#6C3DBF]">
+                    <p className="group-focus:hidden">⮟</p>
+                    <p className="hidden group-focus:flex">⮝</p>
                   </div>
                   <p className="col-span-2 hidden py-4 group-focus:flex">
                     Não. O acesso às trilhas é 100% gratuito.
@@ -80,9 +80,9 @@ export const AprendaAgilidade = () => {
                   className="group grid h-full w-full grid-cols-2 rounded-2xl bg-[#0F172A] px-10 py-3 text-left"
                 >
                   <p className="font-bold">E AGORA, POR ONDE COMEÇAR?</p>
-                  <div className="absolute top-3 right-5 text-2xl font-bold">
-                    <p className="group-focus:hidden">▼</p>
-                    <p className="hidden group-focus:flex">▲</p>
+                  <div className="absolute top-3 right-5 text-2xl font-bold text-[#6C3DBF]">
+                    <p className="group-focus:hidden">⮟</p>
+                    <p className="hidden group-focus:flex">⮝</p>
                   </div>
                   <p className="col-span-2 hidden py-4 group-focus:flex">
                     Comece explorando as trilhas disponíveis e escolha aquela que mais faz sentido

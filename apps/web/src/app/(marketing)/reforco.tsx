@@ -6,7 +6,7 @@ import { CTAButton } from "./components/cta-button";
 export const Reforco = () => {
   return (
     <section className="relative bg-[#080D17] text-white">
-      <article className="relative">
+      <article className="relative md:overflow-hidden">
         <div className="h-max w-max">
           <Image src={bgImg} alt="Imagem de fundo" className="md:object-cover" />
           <div className="absolute top-1 left-5 grid grid-cols-1 md:top-0 md:left-50 md:flex">
