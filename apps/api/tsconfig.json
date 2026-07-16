@@ -55,7 +55,9 @@
     "skipLibCheck": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@/packages/*": ["../packages/*"]
+      "@/packages/*": ["../packages/*"],
+      "zod": ["./node_modules/zod"],
+      "zod/*": ["./node_modules/zod/*"]
     }
   },
   "include": ["src/**/*.ts"],

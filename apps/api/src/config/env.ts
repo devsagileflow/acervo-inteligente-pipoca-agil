@@ -27,6 +27,10 @@ const envSchema = z.object({
   AUTH_SECRET: z.string(),
 });
 
-const env = envSchema.parse(dotenv.config().parsed);
+// Load .env for local development while keeping hosted environments (Render)
+// fully based on process.env.
+dotenv.config();
+
+const env = envSchema.parse(process.env);
 
 export { env };
