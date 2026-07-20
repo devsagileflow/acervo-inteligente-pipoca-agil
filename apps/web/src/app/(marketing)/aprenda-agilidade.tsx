@@ -4,14 +4,14 @@ export const AprendaAgilidade = () => {
       <div>
         <article className="container mx-auto">
           <div>
-            <h1 className="p-10 text-center text-5xl font-bold">FAQ</h1>
-            <div className="grid gap-y-3 p-10 text-2xl">
+            <h1 className="mt-4 mb-8 text-center text-5xl font-bold">FAQ</h1>
+            <div className="grid gap-y-3 p-10 text-[15px] md:text-[20px]">
               <div className="relative w-full rounded-2xl bg-linear-to-r from-[#6C3DBF] to-[#FCD34D] p-0.5">
                 <button
                   type="button"
                   className="group grid h-full w-full grid-cols-2 rounded-2xl bg-[#0F172A] px-10 py-3 text-left"
                 >
-                  <p className="font-bold">PORQUE APRENDER AQUI E NÃO NO YOUTUBE?</p>
+                  <p className="col-span-2 pr-8 font-bold">PORQUE APRENDER AQUI E NÃO NO YOUTUBE?</p>
                   <div className="absolute top-3 right-5 text-2xl font-bold text-[#6C3DBF]">
                     <p className="group-focus:hidden">⮟</p>
                     <p className="hidden group-focus:flex">⮝</p>
@@ -29,7 +29,7 @@ export const AprendaAgilidade = () => {
                   type="button"
                   className="group grid h-full w-full grid-cols-2 rounded-2xl bg-[#0F172A] px-10 py-3 text-left"
                 >
-                  <p className="font-bold">O QUE SÃO TRILHAS DE APRENDIZADO?</p>
+                  <p className="col-span-2 pr-8 font-bold">O QUE SÃO TRILHAS DE APRENDIZADO?</p>
                   <div className="absolute top-3 right-5 text-2xl font-bold text-[#6C3DBF]">
                     <p className="group-focus:hidden">⮟</p>
                     <p className="hidden group-focus:flex">⮝</p>
@@ -46,7 +46,7 @@ export const AprendaAgilidade = () => {
                   type="button"
                   className="group grid h-full w-full grid-cols-2 rounded-2xl bg-[#0F172A] px-10 py-3 text-left"
                 >
-                  <p className="font-bold">PRECISO ME CADASTRAR PARA COMEÇAR?</p>
+                  <p className="col-span-2 pr-8 font-bold">PRECISO ME CADASTRAR PARA COMEÇAR?</p>
                   <div className="absolute top-3 right-5 text-2xl font-bold text-[#6C3DBF]">
                     <p className="group-focus:hidden">⮟</p>
                     <p className="hidden group-focus:flex">⮝</p>
@@ -63,7 +63,7 @@ export const AprendaAgilidade = () => {
                   type="button"
                   className="group grid h-full w-full grid-cols-2 rounded-2xl bg-[#0F172A] px-10 py-3 text-left"
                 >
-                  <p className="font-bold">PRECISO PAGAR PARA USAR A PLATAFORMA?</p>
+                  <p className="col-span-2 pr-8 font-bold">PRECISO PAGAR PARA USAR A PLATAFORMA?</p>
                   <div className="absolute top-3 right-5 text-2xl font-bold text-[#6C3DBF]">
                     <p className="group-focus:hidden">⮟</p>
                     <p className="hidden group-focus:flex">⮝</p>
@@ -79,7 +79,7 @@ export const AprendaAgilidade = () => {
                   type="button"
                   className="group grid h-full w-full grid-cols-2 rounded-2xl bg-[#0F172A] px-10 py-3 text-left"
                 >
-                  <p className="font-bold">E AGORA, POR ONDE COMEÇAR?</p>
+                  <p className="col-span-2 pr-8 font-bold">E AGORA, POR ONDE COMEÇAR?</p>
                   <div className="absolute top-3 right-5 text-2xl font-bold text-[#6C3DBF]">
                     <p className="group-focus:hidden">⮟</p>
                     <p className="hidden group-focus:flex">⮝</p>

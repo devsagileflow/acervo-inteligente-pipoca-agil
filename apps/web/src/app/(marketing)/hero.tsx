@@ -37,12 +37,19 @@ export const Hero = () => {
           </p>
         </div>
 
-        <div className="order-1 relative h-[280px] w-full max-w-[260px] shrink-0 sm:h-[360px] sm:max-w-sm lg:order-2 lg:h-[440px]">
+        <div className="order-1 relative h-[280px] w-full max-w-[260px] shrink-0 sm:h-[360px] sm:max-w-sm lg:order-2 lg:h-[440px] group">
           <Image
             src="/img/logo.png"
             alt="Pipoca Ágil - logo"
             fill
-            className="object-contain"
+            className="object-contain transition-opacity duration-300 group-hover:opacity-0"
+            priority
+          />
+          <Image
+            src="/img/logo2.png"
+            alt="Pipoca Ágil - logo"
+            fill
+            className="object-contain absolute scale-135 inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
             priority
           />
         </div>
