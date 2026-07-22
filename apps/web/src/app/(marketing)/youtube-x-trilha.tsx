@@ -136,8 +136,8 @@ export const YoutubeXTrilha = () => {
         </div>
 
         <div className="mt-2 flex items-center gap-4">
-          <Image src="/img/pipoca-icone.png" alt="" width={26} height={26} />
-          <Image src="/img/pipoca-icone.png" alt="" width={26} height={26} />
+          <Image src="/img/pipoca-icone.png" alt="" width={30} height={30} />
+          <Image src="/img/pipoca-icone.png" alt="" width={30} height={30} />
         </div>
       </div>
     </section>
