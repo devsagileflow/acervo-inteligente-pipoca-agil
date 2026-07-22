@@ -36,7 +36,7 @@ export const FaqItem = ({ question, answer }: FaqItemProps) => {
         <div className="flex items-center justify-between gap-4">
           <p className="font-bold">{question}</p>
           <Image
-            src={isOpen ? "/img/seta-pra-cima.png" : "/img/seta-pra-baixo.png"}
+            src={isOpen ? "/svg/seta-pra-cima.svg" : "/svg/seta-pra-baixo.svg"}
             alt={isOpen ? "Recolher" : "Expandir"}
             width={24}
             height={24}
