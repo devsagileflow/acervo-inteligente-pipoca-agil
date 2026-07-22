@@ -3,7 +3,7 @@ import { CTAButton } from "./components/cta-button";
 
 export const Hero = () => {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[#FFF9E9] to-[#FBBF24] px-8 py-16 lg:px-16">
+    <section className="relative overflow-hidden bg-gradient-to-r from-[#FFF9E9] to-[#FBBF24] px-8 py-16 lg:px-16">
       <Image
         src="/img/fundo-pipoca.png"
         alt=""

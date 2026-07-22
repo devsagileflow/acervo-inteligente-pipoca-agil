@@ -39,7 +39,7 @@ export const YoutubeXTrilha = () => {
               </span>
               <Image src="/img/forward.png" alt="" width={18} height={18} />
             </div>
-            <ul className="flex w-full flex-col items-start gap-2 text-sm text-white/90">
+            <ul className="flex w-fit mx-auto flex-col items-start gap-2 text-sm text-white/90">
               {bullets.youtube.map((item) => (
                 <li key={item} className="flex gap-2">
                   <span className="mt-[6px] h-1 w-1 shrink-0 bg-white/60" />
@@ -67,7 +67,7 @@ export const YoutubeXTrilha = () => {
               </span>
               <Image src="/img/trilha.png" alt="" width={18} height={18} />
             </div>
-            <ul className="flex w-full flex-col items-start gap-2 text-sm text-white/90">
+            <ul className="flex w-fit mx-auto flex-col items-start gap-2 text-sm text-white/90">
               {bullets.trilha.map((item) => (
                 <li key={item} className="flex gap-2">
                   <span className="mt-[6px] h-1 w-1 shrink-0 bg-white/60" />
@@ -102,13 +102,13 @@ export const YoutubeXTrilha = () => {
 
           <div className="flex justify-center gap-4">
             <div className="flex w-[320px] items-center justify-center gap-3">
-              <span className="text-sm font-semibold uppercase tracking-wide text-[#FBBF24]">
+              <span className="text-[14px] font-semibold uppercase tracking-wide text-[#FBBF24]">
                 Youtube
               </span>
               <Image src="/img/forward.png" alt="" width={18} height={18} />
             </div>
             <div className="flex w-[320px] items-center justify-center gap-3">
-              <span className="text-sm font-semibold uppercase tracking-wide text-[#FBBF24]">
+              <span className="text-[14px] font-semibold uppercase tracking-wide text-[#FBBF24]">
                 Trilha
               </span>
               <Image src="/img/trilha.png" alt="" width={18} height={18} />
@@ -119,7 +119,7 @@ export const YoutubeXTrilha = () => {
             <ul className="flex w-[320px] flex-col gap-2 text-base text-white/90">
               {bullets.youtube.map((item) => (
                 <li key={item} className="flex gap-2">
-                  <span className="mt-[7px] h-1.5 w-1.5 shrink-0 bg-white/60" />
+                  <span className="mt-[7px] h-1 w-1 shrink-0 bg-white/60" />
                   {item}
                 </li>
               ))}
@@ -127,7 +127,7 @@ export const YoutubeXTrilha = () => {
             <ul className="flex w-[320px] flex-col gap-2 text-base text-white/90">
               {bullets.trilha.map((item) => (
                 <li key={item} className="flex gap-2">
-                  <span className="mt-[7px] h-1.5 w-1.5 shrink-0 bg-white/60" />
+                  <span className="mt-[7px] h-1 w-1 shrink-0 bg-white/60" />
                   {item}
                 </li>
               ))}
