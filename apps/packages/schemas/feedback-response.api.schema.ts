@@ -1,0 +1,114 @@
+import { z } from "zod";
+
+import { feedbackResponseSchema } from "./feedback-response.schema";
+import { contentTypeSchema } from "./content.schema";
+
+const answerBaseSchema = z.object({
+  questionId: z.string().trim().min(1),
+});
+
+export const starsAnswerSchema = answerBaseSchema
+  .extend({
+    type: z.literal("STARS"),
+    value: z.number().int().min(0).max(5).nullish(),
+    isRequired: z.boolean(),
+  })
+  .refine(
+    (data) =>
+      !data.isRequired || (data.value && data.value >= 1 && data.value <= 5),
+    {
+      message: "Item obrigatório! Sua avaliação é importante para nós.",
+    },
+  );
+
+export const scaleAnswerSchema = answerBaseSchema
+  .extend({
+    type: z.literal("SCALE_0_10"),
+    value: z.number().int().min(0).max(10).nullish(),
+    isRequired: z.boolean(),
+  })
+  .refine(
+    (data) =>
+      !data.isRequired || (data.value && data.value >= 0 && data.value <= 10),
+    {
+      message: "Sua resposta é importante para nós.",
+    },
+  );
+
+export const likeDislikeAnswerSchema = answerBaseSchema
+  .extend({
+    type: z.literal("LIKE_DISLIKE"),
+    value: z.enum(["like", "dislike"]).nullish(),
+    isRequired: z.boolean(),
+  })
+  .refine(
+    (data) =>
+      !data.isRequired || data.value === "like" || data.value === "dislike",
+    {
+      message: "Item obrigatório! Sua avaliação é importante para nós.",
+    },
+  );
+
+export const textAnswerSchema = answerBaseSchema
+  .extend({
+    type: z.literal("TEXT"),
+    value: z.string().nullish(),
+    isRequired: z.boolean(),
+  })
+  .refine(
+    (data) => !data.isRequired || (data.value && data.value.trim().length > 0),
+    {
+      message: "Sua resposta é importante para nós.",
+    },
+  );
+
+export const multipleChoiceAnswerSchema = answerBaseSchema
+  .extend({
+    type: z.literal("MULTIPLE_CHOICE"),
+    optionIds: z.array(z.string().trim().min(1)).min(1).nullish(),
+    isRequired: z.boolean(),
+  })
+  .refine(
+    (data) => !data.isRequired || (data.optionIds && data.optionIds.length > 0),
+    {
+      message: "Item obrigatório! Sua avaliação é importante para nós.",
+    },
+  );
+
+export const singleChoiceAnswerSchema = answerBaseSchema
+  .extend({
+    type: z.literal("SINGLE_CHOICE"),
+    optionId: z.string().trim().min(1).nullish(),
+    isRequired: z.boolean(),
+  })
+  .refine(
+    (data) =>
+      !data.isRequired || (data.optionId && data.optionId.trim().length > 0),
+    {
+      message: "Item obrigatório! Sua avaliação é importante para nós.",
+    },
+  );
+
+export const feedbackAnswerInputSchema = z.discriminatedUnion("type", [
+  starsAnswerSchema,
+  scaleAnswerSchema,
+  likeDislikeAnswerSchema,
+  textAnswerSchema,
+  multipleChoiceAnswerSchema,
+  singleChoiceAnswerSchema,
+]);
+export type FeedbackAnswerInput = z.infer<typeof feedbackAnswerInputSchema>;
+
+export const createFeedbackResponseBodySchema = z.object({
+  answers: z.array(feedbackAnswerInputSchema).min(1),
+  contentType: contentTypeSchema.nullish(),
+  contentId: z.string().nullish(),
+});
+export type CreateFeedbackResponseBody = z.infer<
+  typeof createFeedbackResponseBodySchema
+>;
+
+export const createFeedbackResponseResponseSchema = feedbackResponseSchema;
+export type CreateFeedbackResponseResponse = z.infer<
+  typeof createFeedbackResponseResponseSchema
+>;

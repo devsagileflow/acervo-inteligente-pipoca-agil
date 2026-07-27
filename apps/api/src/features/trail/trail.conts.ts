@@ -1,0 +1,1 @@
+export const TEMP_POSITION_BASE = 1_000_000;

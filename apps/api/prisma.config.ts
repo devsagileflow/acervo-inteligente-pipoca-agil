@@ -4,8 +4,8 @@ import "dotenv/config";
 import { defineConfig } from "prisma/config";
 import { env } from "process";
 
-if (!env.DATABASE_URL)
-  throw new Error("DATABASE_URL environment variable is not set.");
+if (!env.DIRECT_URL)
+  throw new Error("DIRECT_URL environment variable is not set.");
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
@@ -14,6 +14,6 @@ export default defineConfig({
     seed: "tsx prisma/seed.ts",
   },
   datasource: {
-    url: env.DATABASE_URL,
+    url: env.DIRECT_URL,
   },
 });

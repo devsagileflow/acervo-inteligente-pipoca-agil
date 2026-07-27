@@ -3,6 +3,11 @@ import { Prisma } from "@prisma/client";
 import prisma from "@/lib/prisma";
 import { AnalyticsEvent, AnalyticsEventBody } from "@/packages/schemas";
 
+export const getAnalyticsEvents = async (): Promise<AnalyticsEvent[]> => {
+  const events = await prisma.analyticsEvent.findMany();
+  return events as AnalyticsEvent[];
+};
+
 export const createAnalyticsEvent = async (
   data: AnalyticsEventBody,
   userId?: string,
@@ -21,23 +26,4 @@ export const createAnalyticsEvent = async (
   });
 
   return event as AnalyticsEvent;
-};
-
-export const getClickSummary = async () => {
-  const clicks = await prisma.$queryRaw<
-    Array<{ targetId: string | null; clicks: bigint }>
-  >`
-    SELECT
-      "targetId",
-      COUNT(*)::bigint AS "clicks"
-    FROM "analytics_event"
-    WHERE "eventName" = 'click'
-    GROUP BY "targetId"
-    ORDER BY "clicks" DESC
-  `;
-
-  return clicks.map((entry) => ({
-    targetId: entry.targetId,
-    clicks: Number(entry.clicks),
-  }));
 };

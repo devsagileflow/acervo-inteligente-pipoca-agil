@@ -1,6 +1,13 @@
 import z from "zod";
 
-export const analyticsEventTypeSchema = z.enum(["page_view", "click"]);
+export const analyticsEventTypeSchema = z.enum([
+  "page_view",
+  "click",
+  "scroll_depth",
+  "video_play",
+  "video_complete",
+  "video_paused",
+]);
 export type AnalyticsEventType = z.infer<typeof analyticsEventTypeSchema>;
 
 export const analyticsEventBodySchema = z.object({

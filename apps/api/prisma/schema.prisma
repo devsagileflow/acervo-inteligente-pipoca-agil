@@ -13,15 +13,18 @@ datasource db {
 }
 
 model User {
-  id              String           @id @default(ulid())
-  name            String
-  email           String
-  emailVerified   Boolean          @default(false)
-  image           String?
-  role            Role[]
-  sessions        Session[]
-  accounts        Account[]
-  analyticsEvents AnalyticsEvent[]
+  id                  String              @id @default(ulid())
+  name                String
+  email               String
+  emailVerified       Boolean             @default(false)
+  image               String?
+  role                Role[]
+  sessions            Session[]
+  accounts            Account[]
+  analyticsEvents     AnalyticsEvent[]
+  trailProgresses     TrailProgress[]
+  trailItemProgresses TrailItemProgress[]
+  feedbackResponses   FeedbackResponse[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -33,6 +36,27 @@ model User {
 enum Role {
   ADMIN
   USER
+}
+
+enum ContentType {
+  VIDEO
+  TRAIL
+}
+
+enum WaitlistRole {
+  PO
+  SM
+  DEV
+  OTHER
+}
+
+enum QuestionType {
+  STARS
+  SCALE_0_10
+  LIKE_DISLIKE
+  TEXT
+  MULTIPLE_CHOICE
+  SINGLE_CHOICE
 }
 
 model Session {
@@ -106,4 +130,199 @@ model AnalyticsEvent {
   @@index([anonymousId, createdAt])
   @@index([userId, createdAt])
   @@map("analytics_event")
+}
+
+model Video {
+  id                String    @id @default(ulid())
+  title             String
+  description       String?
+  youtubeUrl        String
+  durationInSeconds Int
+  isActive          Boolean   @default(true)
+  deletedAt         DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([title])
+  @@index([isActive, deletedAt, createdAt])
+  @@map("video")
+}
+
+model Trail {
+  id              String              @id @default(ulid())
+  title           String
+  description     String?
+  tags            String[]            @default([])
+  specs           String[]            @default([])
+  imageUrl        String?
+  isPublished     Boolean             @default(false)
+  isActive        Boolean             @default(true)
+  deletedAt       DateTime?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  items           TrailItem[]
+  progressRecords TrailProgress[]
+  itemProgresses  TrailItemProgress[]
+
+  @@index([isPublished, deletedAt, createdAt])
+  @@index([isActive, deletedAt, createdAt])
+  @@map("trail")
+}
+
+model TrailItem {
+  id              String              @id @default(ulid())
+  trailId         String
+  trail           Trail               @relation(fields: [trailId], references: [id], onDelete: Restrict)
+  contentType     ContentType
+  contentId       String
+  position        Int
+  isRequired      Boolean             @default(true)
+  isActive        Boolean             @default(true)
+  deletedAt       DateTime?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  progressRecords TrailItemProgress[]
+
+  @@index([trailId, deletedAt, position])
+  @@index([contentType, contentId])
+  @@map("trail_item")
+}
+
+model TrailProgress {
+  id                   String    @id @default(ulid())
+  userId               String
+  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trailId              String
+  trail                Trail     @relation(fields: [trailId], references: [id], onDelete: Cascade)
+  completionPercentage Int       @default(0)
+  isCompleted          Boolean   @default(false)
+  completedAt          DateTime?
+  lastViewedAt         DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  @@unique([userId, trailId])
+  @@index([userId, updatedAt])
+  @@index([trailId, isCompleted])
+  @@map("trail_progress")
+}
+
+model TrailItemProgress {
+  id          String      @id @default(ulid())
+  userId      String
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trailId     String
+  trail       Trail       @relation(fields: [trailId], references: [id], onDelete: Cascade)
+  trailItemId String?
+  trailItem   TrailItem?  @relation(fields: [trailItemId], references: [id], onDelete: SetNull)
+  contentType ContentType
+  contentId   String
+  viewedAt    DateTime    @default(now())
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@unique([userId, trailItemId])
+  @@index([userId, trailId, viewedAt])
+  @@index([trailId, contentType, contentId])
+  @@index([contentType, contentId])
+  @@map("trail_item_progress")
+}
+
+model FeedbackForm {
+  id          String             @id @default(ulid())
+  title       String
+  description String?
+  contentType ContentType?
+  contentId   String?
+  isPublished Boolean            @default(false)
+  isActive    Boolean            @default(true)
+  deletedAt   DateTime?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  questions   FeedbackQuestion[]
+  responses   FeedbackResponse[]
+
+  @@index([isPublished, isActive, deletedAt, createdAt])
+  @@index([contentType, contentId])
+  @@map("feedback_form")
+}
+
+model FeedbackQuestion {
+  id           String                   @id @default(ulid())
+  formId       String
+  form         FeedbackForm             @relation(fields: [formId], references: [id], onDelete: Cascade)
+  questionType QuestionType
+  label        String
+  isRequired   Boolean                  @default(true)
+  position     Int
+  deletedAt    DateTime?
+  createdAt    DateTime                 @default(now())
+  updatedAt    DateTime                 @updatedAt
+  options      FeedbackQuestionOption[]
+  answers      FeedbackAnswer[]
+
+  @@index([formId, position])
+  @@map("feedback_question")
+}
+
+model FeedbackQuestionOption {
+  id         String           @id @default(ulid())
+  questionId String
+  question   FeedbackQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  label      String
+  position   Int
+  deletedAt  DateTime?
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  @@index([questionId, position])
+  @@map("feedback_question_option")
+}
+
+model FeedbackResponse {
+  id          String           @id @default(ulid())
+  formId      String
+  form        FeedbackForm     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  userId      String?
+  user        User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  contentType ContentType?
+  contentId   String?
+  deletedAt   DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  answers     FeedbackAnswer[]
+
+  @@index([formId, createdAt])
+  @@index([userId, createdAt])
+  @@map("feedback_response")
+}
+
+model FeedbackAnswer {
+  id                String           @id @default(ulid())
+  responseId        String
+  response          FeedbackResponse @relation(fields: [responseId], references: [id], onDelete: Cascade)
+  questionId        String
+  question          FeedbackQuestion @relation(fields: [questionId], references: [id], onDelete: Restrict)
+  value             Json?
+  selectedOptionIds String[]         @default([])
+  deletedAt         DateTime?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  @@index([responseId])
+  @@index([questionId])
+  @@map("feedback_answer")
+}
+
+model Waitlist {
+  id        String        @id @default(ulid())
+  name      String
+  email     String
+  role      WaitlistRole?
+  message   String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@unique([email])
+  @@map("waitlist")
 }

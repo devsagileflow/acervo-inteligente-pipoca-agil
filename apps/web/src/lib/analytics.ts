@@ -1,4 +1,5 @@
-type AnalyticsEventName = "page_view" | "click" | "scroll_depth" | "video_play" | "video_complete";
+type AnalyticsEventName =
+  "page_view" | "click" | "scroll_depth" | "video_play" | "video_complete" | "video_paused";
 
 type AnalyticsEventPayload = {
   eventName: AnalyticsEventName;
@@ -12,15 +13,22 @@ type AnalyticsEventPayload = {
 
 const anonymousIdKey = "pipoca-agil:anonymous-id";
 
+let inMemoryAnonymousId: string | undefined;
+
 export function getAnonymousId() {
   if (typeof window === "undefined") return undefined;
 
-  const storedAnonymousId = window.localStorage.getItem(anonymousIdKey);
-  if (storedAnonymousId) return storedAnonymousId;
+  try {
+    const storedAnonymousId = window.localStorage.getItem(anonymousIdKey);
+    if (storedAnonymousId) return storedAnonymousId;
 
-  const newAnonymousId = window.crypto.randomUUID();
-  window.localStorage.setItem(anonymousIdKey, newAnonymousId);
-  return newAnonymousId;
+    const newAnonymousId = window.crypto.randomUUID();
+    window.localStorage.setItem(anonymousIdKey, newAnonymousId);
+    return newAnonymousId;
+  } catch {
+    inMemoryAnonymousId ??= window.crypto.randomUUID();
+    return inMemoryAnonymousId;
+  }
 }
 
 function getAnalyticsUrl() {
@@ -65,13 +73,53 @@ export async function trackPageView(pagePath: string) {
   });
 }
 
-export async function trackButtonClick(pagePath: string, buttonId: string) {
+export async function trackButtonClick(pagePath: string, buttonId: string, targetId?: string) {
   await trackEvent({
     eventName: "click",
     pagePath,
+    targetId,
     referrer: typeof document !== "undefined" ? document.referrer || undefined : undefined,
     properties: {
       buttonId,
+      pathname: pagePath,
+    },
+  });
+}
+
+export async function trackVideoCompleted(pagePath: string, videoId: string, videoTitle: string) {
+  await trackEvent({
+    eventName: "video_complete",
+    pagePath,
+    referrer: typeof document !== "undefined" ? document.referrer || undefined : undefined,
+    properties: {
+      videoId,
+      videoTitle,
+      pathname: pagePath,
+    },
+  });
+}
+
+export async function trackVideoStarted(pagePath: string, videoId: string, videoTitle: string) {
+  await trackEvent({
+    eventName: "video_play",
+    pagePath,
+    referrer: typeof document !== "undefined" ? document.referrer || undefined : undefined,
+    properties: {
+      videoId,
+      videoTitle,
+      pathname: pagePath,
+    },
+  });
+}
+
+export async function trackVideoPaused(pagePath: string, videoId: string, videoTitle: string) {
+  await trackEvent({
+    eventName: "video_paused",
+    pagePath,
+    referrer: typeof document !== "undefined" ? document.referrer || undefined : undefined,
+    properties: {
+      videoId,
+      videoTitle,
       pathname: pagePath,
     },
   });

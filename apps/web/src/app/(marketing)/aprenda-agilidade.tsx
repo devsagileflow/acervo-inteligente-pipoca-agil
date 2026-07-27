@@ -7,7 +7,7 @@ export const AprendaAgilidade = () => {
         <article className="container mx-auto">
           <div>
             <h1 className="mt-4 mb-8 text-center text-5xl font-bold">FAQ</h1>
-            <div className="mx-auto grid max-w-5xl gap-y-3 p-10 text-[15px] md:text-[20px]">
+            <div className="mx-auto grid max-w-5xl gap-y-3 p-10 pb-24 text-[15px] md:text-[20px]">
               <FaqItem
                 question="PORQUE APRENDER AQUI E NÃO NO YOUTUBE?"
                 answer="Porque aqui você não precisa adivinhar o que estudar. Os conteúdos já estão oganizados em trilhas para te guiar do começo ao próximo passo, sem perder tempo."
