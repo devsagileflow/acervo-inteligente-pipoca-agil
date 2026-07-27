@@ -13,15 +13,17 @@ datasource db {
 }
 
 model User {
-  id              String           @id @default(ulid())
-  name            String
-  email           String
-  emailVerified   Boolean          @default(false)
-  image           String?
-  role            Role[]
-  sessions        Session[]
-  accounts        Account[]
-  analyticsEvents AnalyticsEvent[]
+  id                  String              @id @default(ulid())
+  name                String
+  email               String
+  emailVerified       Boolean             @default(false)
+  image               String?
+  role                Role[]
+  sessions            Session[]
+  accounts            Account[]
+  analyticsEvents     AnalyticsEvent[]
+  trailProgresses     TrailProgress[]
+  trailItemProgresses TrailItemProgress[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -33,6 +35,10 @@ model User {
 enum Role {
   ADMIN
   USER
+}
+
+enum ContentType {
+  VIDEO
 }
 
 model Session {
@@ -106,4 +112,97 @@ model AnalyticsEvent {
   @@index([anonymousId, createdAt])
   @@index([userId, createdAt])
   @@map("analytics_event")
+}
+
+model Video {
+  id                String    @id @default(ulid())
+  title             String
+  description       String?
+  youtubeUrl        String
+  durationInSeconds Int
+  isActive          Boolean   @default(true)
+  deletedAt         DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([title])
+  @@index([isActive, deletedAt, createdAt])
+  @@map("video")
+}
+
+model Trail {
+  id              String              @id @default(ulid())
+  title           String
+  description     String?
+  isPublished     Boolean             @default(false)
+  isActive        Boolean             @default(true)
+  deletedAt       DateTime?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  items           TrailItem[]
+  progressRecords TrailProgress[]
+  itemProgresses  TrailItemProgress[]
+
+  @@index([isPublished, deletedAt, createdAt])
+  @@index([isActive, deletedAt, createdAt])
+  @@map("trail")
+}
+
+model TrailItem {
+  id              String              @id @default(ulid())
+  trailId         String
+  trail           Trail               @relation(fields: [trailId], references: [id], onDelete: Restrict)
+  contentType     ContentType
+  contentId       String
+  position        Int
+  isRequired      Boolean             @default(true)
+  isActive        Boolean             @default(true)
+  deletedAt       DateTime?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  progressRecords TrailItemProgress[]
+
+  @@index([trailId, deletedAt, position])
+  @@index([contentType, contentId])
+  @@map("trail_item")
+}
+
+model TrailProgress {
+  id                   String    @id @default(ulid())
+  userId               String
+  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trailId              String
+  trail                Trail     @relation(fields: [trailId], references: [id], onDelete: Cascade)
+  completionPercentage Int       @default(0)
+  isCompleted          Boolean   @default(false)
+  completedAt          DateTime?
+  lastViewedAt         DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  @@unique([userId, trailId])
+  @@index([userId, updatedAt])
+  @@index([trailId, isCompleted])
+  @@map("trail_progress")
+}
+
+model TrailItemProgress {
+  id          String      @id @default(ulid())
+  userId      String
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trailId     String
+  trail       Trail       @relation(fields: [trailId], references: [id], onDelete: Cascade)
+  trailItemId String?
+  trailItem   TrailItem?  @relation(fields: [trailItemId], references: [id], onDelete: SetNull)
+  contentType ContentType
+  contentId   String
+  viewedAt    DateTime    @default(now())
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@unique([userId, trailItemId])
+  @@index([userId, trailId, viewedAt])
+  @@index([trailId, contentType, contentId])
+  @@index([contentType, contentId])
+  @@map("trail_item_progress")
 }

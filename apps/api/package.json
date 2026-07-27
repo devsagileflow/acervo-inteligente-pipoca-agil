@@ -9,6 +9,7 @@
     "start": "node dist/api/src/server.js",
     "postinstall": "prisma generate && npx prisma migrate deploy",
     "seed": "prisma db seed",
+    "test": "node --import tsx --test src/**/*.test.ts",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write ."
   },

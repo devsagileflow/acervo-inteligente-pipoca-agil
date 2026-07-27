@@ -1,6 +1,6 @@
-# Fastify API Boilerplate
+# Pipoca Ágil API
 
-API construída com Fastify, TypeScript, Prisma e Better Auth.
+API construída com Fastify, TypeScript, Prisma e Better Auth para autenticação, analytics e a base de conteúdo estruturado da plataforma.
 
 ## Setup
 
@@ -31,13 +31,18 @@ src/
 │   ├── logger.ts         # Logger (Pino)
 │   ├── permissions.ts    # Controle de acesso (ABAC)
 │   └── index.ts
-├── features/             # Rotas e lógica de negócio
+├── features/             # Rotas e lógica de negócio por domínio
 │   ├── auth/
 │   │   └── route.ts      # Endpoints de auth
+│   ├── analytics/
+│   ├── trail/
+│   ├── user/
+│   └── video/
 │   └── index.ts
 ├── lib/
 │   ├── auth.ts           # Configuração Better Auth
 │   ├── prisma.ts         # Cliente Prisma
+│   ├── session.ts        # Helpers de autorização a partir da sessão
 │   └── index.ts
 └── plugins/              # Plugins Fastify
     ├── cors.ts
@@ -61,6 +66,15 @@ src/
 | **Rate Limiting**             | Proteção contra abuso                               |
 | **CORS**                      | Controle de origem                                  |
 | **Pino**                      | Logger estruturado                                  |
+
+## Domínios Atuais
+
+- Auth: Better Auth com basePath `/api/auth`.
+- Analytics: ingestão de eventos e sumário de cliques.
+- Video Management: CRUD administrativo e leitura pública de vídeos ativos.
+- Trail Management: CRUD administrativo e leitura pública de trilhas publicadas.
+- Trail Item Management: composição ordenada de trilhas por `contentType` + `contentId`.
+- Trail Progress Tracking: registro de visualização, percentual de conclusão e status final por usuário.
 
 ## Validação & Type Safety
 
@@ -119,6 +133,43 @@ Swagger disponível em `/documentation`
 Scalar UI em `/reference`
 
 Mantém-se sincronizado automaticamente com schemas Zod das rotas.
+
+## Endpoints de Conteúdo
+
+Novos endpoints REST sob `/api`:
+
+- `GET /videos`: leitura pública de vídeos ativos com paginação e filtro por título.
+- `GET /videos/:videoId`: leitura pública de vídeo ativo por id.
+- `POST /videos`, `PUT /videos/:videoId`, `DELETE /videos/:videoId`: administração de vídeos por usuários ADMIN.
+- `GET /trails`: leitura pública de trilhas publicadas com paginação, filtro e opção de incluir itens.
+- `GET /trails/:trailId`: leitura pública de trilha publicada por id com itens ordenados.
+- `POST /trails`, `PUT /trails/:trailId`, `DELETE /trails/:trailId`: administração de trilhas por usuários ADMIN.
+- `POST /trails/:trailId/items`, `PUT /trails/:trailId/items/:itemId`, `DELETE /trails/:trailId/items/:itemId`: administração de itens ordenados da trilha por usuários ADMIN.
+- `GET /trails/:trailId/progress`, `POST /trails/:trailId/progress/view`: leitura e atualização do progresso do usuário autenticado.
+
+### Regras principais
+
+- Vídeos usam soft delete com `isActive=false` e `deletedAt` preenchido.
+- Trilhas publicamente visíveis precisam estar `isPublished=true`, `isActive=true` e não removidas logicamente.
+- Itens da trilha usam `contentType` + `contentId`, iniciando com `VIDEO`.
+- Conflitos de `position` são resolvidos com deslocamento automático.
+- Progresso calcula percentual apenas sobre itens atualmente ativos/publicados.
+- Conclusão da trilha depende apenas dos itens com `isRequired=true`.
+
+## Testes
+
+```bash
+npm test
+```
+
+A suíte atual cobre autorização administrativa, leitura pública de vídeos/trilhas e regras centrais de progress tracking.
+
+## Notas de Implementação
+
+- Os contratos HTTP compartilhados ficam em `apps/packages/schemas` e são a fonte de verdade para request/response.
+- As rotas seguem o padrão `feature.route.ts` para HTTP/schema e `feature.service.ts` para regra de negócio/acesso a dados.
+- A autorização administrativa das novas features consulta o papel real do usuário no banco a partir da sessão autenticada.
+- O progresso foi modelado para aceitar expansão futura de tipos de conteúdo sem quebrar a estrutura persistida.
 
 ## Build & Deploy
 
