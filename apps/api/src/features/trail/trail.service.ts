@@ -71,7 +71,9 @@ const buildTrailWhere = (query: ListTrailsQuery, isAdmin: boolean) => {
   };
 };
 
-const getValidVideoReference = async (videoId: string) =>
+const getValidVideoReference = async (
+  videoId: string,
+): Promise<PrismaVideo | null> =>
   prisma.video.findFirst({
     where: {
       id: videoId,
@@ -277,6 +279,9 @@ export const listTrails = async (
 
   const [trails, total] = await prisma.$transaction([
     prisma.trail.findMany({
+      include: {
+        items: true,
+      },
       where,
       orderBy: { createdAt: "desc" },
       skip: (page - 1) * pageSize,
@@ -285,23 +290,23 @@ export const listTrails = async (
     prisma.trail.count({ where }),
   ]);
 
-  const itemsByTrail = query.includeItems
-    ? await Promise.all(
-        trails.map(async (trail) => ({
-          trailId: trail.id,
-          items: await getOrderedTrailItems(trail.id, !isAdmin),
-        })),
-      )
-    : [];
-
-  const itemsMap = new Map(
-    itemsByTrail.map((entry) => [entry.trailId, entry.items]),
+  const trailsWithContent = await Promise.all(
+    trails.map(async (trail) => ({
+      ...trail,
+      items: await Promise.all(
+        trail.items?.map(async (item) => ({
+          ...item,
+          content: await ensureContentReference(
+            item.contentType,
+            item.contentId,
+          ),
+        })) ?? [],
+      ),
+    })),
   );
 
   return {
-    items: trails.map((trail) =>
-      mapTrail({ ...trail, items: itemsMap.get(trail.id) }),
-    ),
+    items: trailsWithContent.map((trail) => mapTrail(trail)),
     page,
     pageSize,
     total,
