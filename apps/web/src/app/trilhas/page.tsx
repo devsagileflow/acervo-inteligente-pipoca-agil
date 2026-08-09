@@ -1,19 +1,18 @@
-const fetchData = async () => {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-    const response = await fetch(`${baseUrl}/api/trails`);
+import { TrilhasContent, type Trilha } from "./components/trilhas-card";
 
-    if (!response.ok) throw new Error("Failed to fetch trilhas");
+const trilhas: Trilha[] = [
+  {
+    id: "agilidade-geral",
+    title: "Agilidade Geral",
+    image: "/img/agilidade-geral-trilha.png",
+  },
+  {
+    id: "product-owner",
+    title: "Product Owner",
+    image: "/img/product-owner-trilha.png",
+  },
+];
 
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching trilhas:", error);
-    return [];
-  }
-};
-
-export default async function PageTrilhas() {
-  const fetchedData = await fetchData();
-  return <pre>{JSON.stringify(fetchedData, null, 2)}</pre>;
+export default function PageTrilhas() {
+  return <TrilhasContent trilhas={trilhas} />;
 }
