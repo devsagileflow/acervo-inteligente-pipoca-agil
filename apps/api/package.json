@@ -5,7 +5,7 @@
   "main": "dist/api/src/server.js",
   "scripts": {
     "dev": "tsx --watch src/server.ts",
-    "build": "tsc --outDir dist/ && tsc-alias --outDir dist/",
+    "build": "tsc --outDir dist/ && tsc-alias --outDir dist/ && copyfiles -u 1 public/**/* dist/api/public",
     "start": "node dist/api/src/server.js",
     "postinstall": "prisma generate && npx prisma migrate deploy",
     "seed": "prisma db seed",
@@ -44,6 +44,7 @@
     "@types/node": "^25.6.0",
     "@types/pg": "^8.20.0",
     "@types/qs": "^6.15.0",
+    "copyfiles": "^2.4.1",
     "eslint": "^10.3.0",
     "globals": "^17.6.0",
     "prettier": "^3.8.3",
