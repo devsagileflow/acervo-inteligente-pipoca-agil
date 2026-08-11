@@ -5,7 +5,7 @@
   "main": "dist/api/src/server.js",
   "scripts": {
     "dev": "tsx --watch src/server.ts",
-    "build": "tsc --outDir dist/ && tsc-alias --outDir dist/ && copyfiles -u 1 public/**/* dist/api/public",
+    "build": "tsc --outDir dist/ && tsc-alias --outDir dist/ && copyfiles -u 1 public/**/* dist/public",
     "start": "node dist/api/src/server.js",
     "postinstall": "prisma generate && npx prisma migrate deploy",
     "seed": "prisma db seed",
