@@ -22,6 +22,7 @@ export const trailSchema = z.object({
   id: z.string(),
   title: z.string(),
   description: z.string().nullish(),
+  imageUrl: z.string().nullish(),
   isPublished: z.boolean(),
   isActive: z.boolean(),
   deletedAt: z.coerce.date().nullish(),

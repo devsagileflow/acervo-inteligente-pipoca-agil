@@ -134,6 +134,7 @@ model Trail {
   id              String              @id @default(ulid())
   title           String
   description     String?
+  imageUrl        String?
   isPublished     Boolean             @default(false)
   isActive        Boolean             @default(true)
   deletedAt       DateTime?

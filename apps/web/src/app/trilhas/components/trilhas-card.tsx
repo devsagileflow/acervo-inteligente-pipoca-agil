@@ -1,18 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CTAFooter } from "@/app/(marketing)/cta-footer";
+import type { Trail } from "@/packages/schemas/trail.api.schema";
 
-export interface Trilha {
-  id: string;
-  title: string;
-  image: string;
-}
-
-interface TrilhasContentProps {
-  trilhas: Trilha[];
-}
-
-export const TrilhasContent = ({ trilhas }: TrilhasContentProps) => {
+export const TrilhasContent = ({ trilhas }: { trilhas: Trail[] }) => {
+  console.log(
+    "trilhas",
+    trilhas.map((trilha) => trilha.imageUrl),
+  );
   return (
     <div className="relative flex min-h-screen w-full flex-col">
       <Image
@@ -20,7 +15,7 @@ export const TrilhasContent = ({ trilhas }: TrilhasContentProps) => {
         alt=""
         fill
         priority
-        className="object-cover object-top -z-10"
+        className="-z-10 object-cover object-top"
       />
 
       <Image
@@ -29,7 +24,7 @@ export const TrilhasContent = ({ trilhas }: TrilhasContentProps) => {
         width={1920}
         height={340}
         priority
-        className="w-full h-auto"
+        className="h-auto w-full"
       />
 
       <div className="flex flex-1 flex-col items-center gap-16 px-6 pt-5 pb-24">
@@ -40,13 +35,16 @@ export const TrilhasContent = ({ trilhas }: TrilhasContentProps) => {
               href={`/trilhas/${trilha.id}`}
               className="block w-full max-w-[1200px] overflow-hidden rounded-[20px] border-[3px] border-white/10 transition hover:opacity-90"
             >
-              <Image
-                src={trilha.image}
-                alt={trilha.title}
-                width={800}
-                height={415}
-                className="h-auto w-full"
-              />
+              {trilha.imageUrl && (
+                <Image
+                  unoptimized
+                  src={trilha.imageUrl}
+                  alt={trilha.title}
+                  width={800}
+                  height={415}
+                  className="h-auto w-full"
+                />
+              )}
             </Link>
           ))}
         </div>

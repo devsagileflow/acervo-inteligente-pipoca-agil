@@ -201,6 +201,8 @@ export async function seedAgilidadeGeralTrail(prisma: PrismaClient) {
       where: { id: AGILIDADE_GERAL_TRAIL_ID },
       update: {
         title: "Trilha Agilidade Geral",
+        imageUrl:
+          process.env.BASE_URL + "/public/images/trails/Trilha_Agilidade.png",
         description: AGILIDADE_GERAL_TRAIL_DESCRIPTION,
         isPublished: true,
         isActive: true,
@@ -209,6 +211,8 @@ export async function seedAgilidadeGeralTrail(prisma: PrismaClient) {
       create: {
         id: AGILIDADE_GERAL_TRAIL_ID,
         title: "Trilha Agilidade Geral",
+        imageUrl:
+          process.env.BASE_URL + "/public/images/trails/Trilha_Agilidade.png",
         description: AGILIDADE_GERAL_TRAIL_DESCRIPTION,
         isPublished: true,
         isActive: true,
@@ -267,6 +271,9 @@ export async function seedPoProductOwnerTrail(prisma: PrismaClient) {
       where: { id: PO_TRAIL_ID },
       update: {
         title: "Trilha PO — Product Owner",
+        imageUrl:
+          process.env.BASE_URL +
+          "/public/images/trails/Trilha_Product_Owner.png",
         description: PO_TRAIL_DESCRIPTION,
         isPublished: true,
         isActive: true,
@@ -275,6 +282,9 @@ export async function seedPoProductOwnerTrail(prisma: PrismaClient) {
       create: {
         id: PO_TRAIL_ID,
         title: "Trilha PO — Product Owner",
+        imageUrl:
+          process.env.BASE_URL +
+          "/public/images/trails/Trilha_Product_Owner.png",
         description: PO_TRAIL_DESCRIPTION,
         isPublished: true,
         isActive: true,
