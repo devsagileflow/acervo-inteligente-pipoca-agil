@@ -193,7 +193,7 @@ const PO_VIDEOS: SeedVideo[] = [
 ];
 
 const PO_TRAIL_DESCRIPTION =
-  "Trilha prática sobre decisões, backlog e limites reais do papel de Product Owner, com foco em comportamento e armadilhas do cargo. Tags: Product Owner, Backlog e Priorização, Histórias de Usuário, Discovery, Papéis Ágeis (PO x PM x SM), IA Aplicada a Produto, Métricas de Produto, Transição de Carreira. Ficha técnica: 9 vídeos, duração total aproximada de 6h34min, formato misto com pílulas curtas e conteúdos longos, ritmo sugerido de 10 a 13 sessões de estudo.";
+  "Trilha prática sobre as decisões, o backlog e os limites reais do papel de Product Owner.\n\nNão é uma trilha teórica de certificação: o foco é comportamento, decisão e armadilhas reais do cargo — PO que só documenta ao invés de decidir, PO \"tirador de pedido\", PO que invade o papel do Scrum Master.\n\nE como usar IA como apoio sem perder a essência do trabalho (entender a dor do cliente).";
 
 export async function seedAgilidadeGeralTrail(prisma: PrismaClient) {
   await prisma.$transaction(async (tx) => {
