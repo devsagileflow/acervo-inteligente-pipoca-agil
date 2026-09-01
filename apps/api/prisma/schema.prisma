@@ -134,6 +134,8 @@ model Trail {
   id              String              @id @default(ulid())
   title           String
   description     String?
+  tags            String[]            @default([])
+  specs           String[]            @default([])
   imageUrl        String?
   isPublished     Boolean             @default(false)
   isActive        Boolean             @default(true)

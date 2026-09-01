@@ -21,6 +21,8 @@ export type TrailItem = z.infer<typeof trailItemSchema>;
 export const trailSchema = z.object({
   id: z.string(),
   title: z.string(),
+  tags: z.array(z.string()).optional(),
+  specs: z.array(z.string()).optional(),
   description: z.string().nullish(),
   imageUrl: z.string().nullish(),
   isPublished: z.boolean(),
@@ -45,6 +47,8 @@ export type TrailItemParams = z.infer<typeof trailItemParamsSchema>;
 
 export const createTrailBodySchema = z.object({
   title: z.string().trim().min(1),
+  tags: z.array(z.string().trim().min(1)).optional(),
+  specs: z.array(z.string().trim().min(1)).optional(),
   description: z.string().trim().min(1).optional(),
   isPublished: z.boolean().optional(),
   isActive: z.boolean().optional(),
@@ -56,6 +60,7 @@ export type UpdateTrailBody = z.infer<typeof updateTrailBodySchema>;
 
 export const listTrailsQuerySchema = paginationQuerySchema.extend({
   title: z.string().trim().min(1).optional(),
+  tags: z.array(z.string().trim().min(1)).optional(),
   isPublished: z.coerce.boolean().optional(),
   isActive: z.coerce.boolean().optional(),
   includeDeleted: z.coerce.boolean().optional(),

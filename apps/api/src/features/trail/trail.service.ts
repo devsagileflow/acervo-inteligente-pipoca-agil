@@ -81,6 +81,11 @@ const buildTrailWhere = (query: ListTrailsQuery, isAdmin: boolean) => {
           mode: "insensitive" as const,
         }
       : undefined,
+    tags: query.tags?.length
+      ? {
+          hasSome: query.tags,
+        }
+      : undefined,
   };
 };
 

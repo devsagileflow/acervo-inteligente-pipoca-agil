@@ -1,16 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Play, Clock, BookOpen } from "lucide-react";
 import { CTAFooter } from "@/app/(marketing)/cta-footer";
 import { TrilhasHeader } from "./trilhas-header";
 import type { Trail } from "@/packages/schemas/trail.api.schema";
-import { getTrailStats, parseTrailDescription } from "./trilha-content";
-
+import { getTrailStats } from "./trilha-content";
 
 const TrilhaTitle = ({ title }: { title: string }) => {
   const [firstWord, ...rest] = title.split(" ");
   return (
-    <h2 className="text-4xl leading-none tracking-normal font-bold text-white">
+    <h2 className="text-4xl leading-none font-bold tracking-normal text-white">
       {firstWord} <span className="text-amber-400">{rest.join(" ")}</span>
     </h2>
   );
@@ -28,13 +26,13 @@ const TrilhaTags = ({ tags }: { tags: string[] }) => {
       {visible.map((tag) => (
         <span
           key={tag}
-          className="flex cursor-pointer h-[25px] items-center rounded-[5px] bg-gradient-to-r from-[#6C3DBF] to-[#FCD34D] px-4 py-2 text-xs font-bold text-black"
+          className="flex h-[25px] cursor-pointer items-center rounded-[5px] bg-gradient-to-r from-[#6C3DBF] to-[#FCD34D] px-4 py-2 text-xs font-bold text-black"
         >
           {tag}
         </span>
       ))}
       {remaining > 0 && (
-        <span className="flex cursor-pointer h-[25px] items-center rounded-[5px] bg-gradient-to-r from-[#6C3DBF] to-[#FCD34D] px-4 py-2 text-xs font-bold text-black">
+        <span className="flex h-[25px] cursor-pointer items-center rounded-[5px] bg-gradient-to-r from-[#6C3DBF] to-[#FCD34D] px-4 py-2 text-xs font-bold text-black">
           + {remaining}
         </span>
       )}
@@ -43,18 +41,19 @@ const TrilhaTags = ({ tags }: { tags: string[] }) => {
 };
 
 const TrilhaCard = ({ trilha }: { trilha: Trail }) => {
-  const { summary, tags, fichaTecnica } = parseTrailDescription(trilha.description);
   const { videosCount, durationLabel } = getTrailStats(trilha);
 
   return (
     <div className="w-full max-w-[1400px] rounded-3xl border border-amber-400/60 bg-[#0c1225] p-10">
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
         <div className="flex flex-col gap-6">
-          <TrilhaTags tags={tags} />
+          <TrilhaTags tags={trilha.tags ?? []} />
           <TrilhaTitle title={trilha.title} />
 
-          {summary && (
-            <p className="leading-relaxed tracking-normal text-[#F1F5F9] text-base whitespace-pre-wrap text-justify">{trilha.description}</p>
+          {trilha.description && (
+            <p className="text-justify text-base leading-relaxed tracking-normal whitespace-pre-wrap text-[#F1F5F9]">
+              {trilha.description}
+            </p>
           )}
 
           <Link
@@ -90,10 +89,10 @@ const TrilhaCard = ({ trilha }: { trilha: Trail }) => {
                 <span>{durationLabel}</span>
               </div>
             )}
-            {fichaTecnica && (
+            {trilha.specs && trilha.specs.length > 0 && (
               <div className="flex items-center gap-2">
                 <Image src="/img/duracao2.png" alt="Ícone de vídeo" width={16} height={16} />
-                <span>{fichaTecnica}</span>
+                <span>{trilha.specs.join(", ")}</span>
               </div>
             )}
           </div>
@@ -105,13 +104,13 @@ const TrilhaCard = ({ trilha }: { trilha: Trail }) => {
 
 export const TrilhasContent = ({ trilhas }: { trilhas: Trail[] }) => {
   return (
-    <div className="relative bg-[#0F172A] flex min-h-screen w-full flex-col">
+    <div className="relative flex min-h-screen w-full flex-col bg-[#0F172A]">
       <TrilhasHeader />
 
       <div className="flex flex-1 flex-col items-center gap-16 px-6 pt-16 pb-24">
-       <h1 className="text-center text-[30px] md:text-[45px] font-extrabold text-white">
+        <h1 className="text-center text-[30px] font-extrabold text-white md:text-[45px]">
           ESCOLHA A <span className="text-amber-400">SUA TRILHA</span>
-       </h1>
+        </h1>
 
         <div className="flex flex-col items-center gap-10">
           {trilhas.map((trilha) => (

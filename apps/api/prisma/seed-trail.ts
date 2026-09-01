@@ -106,7 +106,24 @@ const AGILIDADE_GERAL_VIDEOS: SeedVideo[] = [
 ];
 
 const AGILIDADE_GERAL_TRAIL_DESCRIPTION =
-  "Trilha de fundamentos sobre cerimônias, auto-organização, antipadrões ágeis, histórias de usuário e acompanhamento de progresso. Tags: Scrum e Cerimônias, Auto-organização, Antipadrões Ágeis, Histórias de Usuário, Critérios de Aceite, Acompanhamento de Progresso, Crítica e Reflexão. Ficha técnica: 10 vídeos, duração total aproximada de 2h54min, formato em pílulas objetivas de 9 a 38min, com ritmo sugerido de 5 a 6 sessões de estudo.";
+  'Trilha de fundamentos: como conduzir bem as cerimônias do dia a dia, reconhecer quando o "ágil" de uma equipe é só verniz sobre um processo tradicional.\n\nEscrever e refinar boas histórias de usuário, e acompanhar o progresso do time com os gráficos certos.\n\nFecha com uma reflexão crítica sobre os mitos mais repetidos sobre agilidade.';
+const AGILIDADE_GERAL_TRAIL_TAGS = [
+  "Scrum e Cerimônias",
+  "Auto-organização",
+  "Antipadrões Ágeis",
+  "Acompanhamento de Progresso",
+  "Critica e Reflexão",
+  "Histórias de Usuário",
+  "Critérios de Aceite",
+];
+const AGILIDADE_GERAL_TRAIL_SPECS = [
+  "10 vídeos",
+  "2h54min de duração",
+  "Pílulas objetivas de 9 a 38 minutos",
+  "Ritmo sugerido: ~5-6 sessões de estudo (blocos de 30-40min), ou ~2 semanas em ritmo de 1 vídeo a cada 2 dias",
+];
+const AGILIDADE_GERAL_TRAIL_IMAGE_URL =
+  process.env.BASE_URL + "/public/images/trails/Trilha_Agilidade.png";
 
 const PO_VIDEOS: SeedVideo[] = [
   {
@@ -193,16 +210,35 @@ const PO_VIDEOS: SeedVideo[] = [
 ];
 
 const PO_TRAIL_DESCRIPTION =
-  "Trilha prática sobre as decisões, o backlog e os limites reais do papel de Product Owner.\n\nNão é uma trilha teórica de certificação: o foco é comportamento, decisão e armadilhas reais do cargo — PO que só documenta ao invés de decidir, PO \"tirador de pedido\", PO que invade o papel do Scrum Master.\n\nE como usar IA como apoio sem perder a essência do trabalho (entender a dor do cliente).";
+  'Trilha prática sobre as decisões, o backlog e os limites reais do papel de Product Owner.\n\nNão é uma trilha teórica de certificação: o foco é comportamento, decisão e armadilhas reais do cargo — PO que só documenta em vez de decidir, PO "tirador de pedido", PO que invade o papel do Scrum Master.\n\nE como usar IA como apoio sem perder a essência do trabalho (entender a dor do cliente).';
+const PO_TRAIL_TAGS = [
+  "Product Owner",
+  "Histórias de Usuário",
+  "Backlog e Priorização",
+  "Discovery",
+  "IA Aplicada a Produto",
+  "Papéis Ágeis",
+  "Métricas de Produto",
+  "Transição de Carreira",
+];
+const PO_TRAIL_SPECS = [
+  "9 vídeos",
+  "6h34 de duração",
+  "4 pílulas curtas de 12-26 min + 5 conteúdos longos (57min-1h20)",
+  "Ritmo sugerido: ~10-13 sessões de estudo (blocos de 30-40min), ou ~2 semanas em ritmo de 1 vídeo por dia útil",
+];
+const PO_TRAIL_IMAGE_URL =
+  process.env.BASE_URL + "/public/images/trails/Trilha_Product_Owner.png";
 
 export async function seedAgilidadeGeralTrail(prisma: PrismaClient) {
   await prisma.$transaction(async (tx) => {
     await tx.trail.upsert({
       where: { id: AGILIDADE_GERAL_TRAIL_ID },
       update: {
-        title: "Trilha Agilidade Geral",
-        imageUrl:
-          process.env.BASE_URL + "/public/images/trails/Trilha_Agilidade.png",
+        title: "TRILHA AGILIDADE GERAL",
+        tags: AGILIDADE_GERAL_TRAIL_TAGS,
+        specs: AGILIDADE_GERAL_TRAIL_SPECS,
+        imageUrl: AGILIDADE_GERAL_TRAIL_IMAGE_URL,
         description: AGILIDADE_GERAL_TRAIL_DESCRIPTION,
         isPublished: true,
         isActive: true,
@@ -210,9 +246,10 @@ export async function seedAgilidadeGeralTrail(prisma: PrismaClient) {
       },
       create: {
         id: AGILIDADE_GERAL_TRAIL_ID,
-        title: "Trilha Agilidade Geral",
-        imageUrl:
-          process.env.BASE_URL + "/public/images/trails/Trilha_Agilidade.png",
+        title: "TRILHA AGILIDADE GERAL",
+        tags: AGILIDADE_GERAL_TRAIL_TAGS,
+        specs: AGILIDADE_GERAL_TRAIL_SPECS,
+        imageUrl: AGILIDADE_GERAL_TRAIL_IMAGE_URL,
         description: AGILIDADE_GERAL_TRAIL_DESCRIPTION,
         isPublished: true,
         isActive: true,
@@ -270,10 +307,10 @@ export async function seedPoProductOwnerTrail(prisma: PrismaClient) {
     await tx.trail.upsert({
       where: { id: PO_TRAIL_ID },
       update: {
-        title: "Trilha PO — Product Owner",
-        imageUrl:
-          process.env.BASE_URL +
-          "/public/images/trails/Trilha_Product_Owner.png",
+        title: "TRILHA PRODUCT OWNER",
+        tags: PO_TRAIL_TAGS,
+        specs: PO_TRAIL_SPECS,
+        imageUrl: PO_TRAIL_IMAGE_URL,
         description: PO_TRAIL_DESCRIPTION,
         isPublished: true,
         isActive: true,
@@ -281,10 +318,10 @@ export async function seedPoProductOwnerTrail(prisma: PrismaClient) {
       },
       create: {
         id: PO_TRAIL_ID,
-        title: "Trilha PO — Product Owner",
-        imageUrl:
-          process.env.BASE_URL +
-          "/public/images/trails/Trilha_Product_Owner.png",
+        title: "TRILHA PRODUCT OWNER",
+        tags: PO_TRAIL_TAGS,
+        specs: PO_TRAIL_SPECS,
+        imageUrl: PO_TRAIL_IMAGE_URL,
         description: PO_TRAIL_DESCRIPTION,
         isPublished: true,
         isActive: true,

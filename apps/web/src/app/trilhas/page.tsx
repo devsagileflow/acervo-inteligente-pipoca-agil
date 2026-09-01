@@ -5,7 +5,7 @@ const fetchData = async (): Promise<Result<PaginatedTrails>> => {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL;
     const response = await fetch(`${baseUrl}/api/trails`, {
-      cache: "force-cache",
+      cache: process.env.NODE_ENV === "production" ? "force-cache" : "no-cache",
       next: { revalidate: 24 * 60 * 60 }, // 24 hours
     });
     if (!response.ok) throw new Error("Failed to fetch trilhas");
