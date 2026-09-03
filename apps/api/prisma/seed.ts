@@ -4,6 +4,7 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
 
 import { seedAgilidadeGeralTrail, seedPoProductOwnerTrail } from "./seed-trail";
+import { seedFeedbackForms } from "./seed-feedback";
 
 async function main() {
   const databaseUrl = process.env.DATABASE_URL;
@@ -17,8 +18,9 @@ async function main() {
   try {
     await seedAgilidadeGeralTrail(prisma);
     await seedPoProductOwnerTrail(prisma);
+    await seedFeedbackForms(prisma);
     console.log(
-      "Seed executado com sucesso: Trilhas Agilidade Geral e PO — Product Owner.",
+      "Seed executado com sucesso: Trilhas Agilidade Geral e PO — Product Owner, e formulários de feedback.",
     );
   } finally {
     await prisma.$disconnect();

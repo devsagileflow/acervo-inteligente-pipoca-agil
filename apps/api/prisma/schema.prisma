@@ -24,6 +24,7 @@ model User {
   analyticsEvents     AnalyticsEvent[]
   trailProgresses     TrailProgress[]
   trailItemProgresses TrailItemProgress[]
+  feedbackResponses   FeedbackResponse[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -39,6 +40,16 @@ enum Role {
 
 enum ContentType {
   VIDEO
+  TRAIL
+}
+
+enum QuestionType {
+  STARS
+  SCALE_0_10
+  LIKE_DISLIKE
+  TEXT
+  MULTIPLE_CHOICE
+  SINGLE_CHOICE
 }
 
 model Session {
@@ -208,4 +219,88 @@ model TrailItemProgress {
   @@index([trailId, contentType, contentId])
   @@index([contentType, contentId])
   @@map("trail_item_progress")
+}
+
+model FeedbackForm {
+  id          String             @id @default(ulid())
+  title       String
+  description String?
+  contentType ContentType?
+  contentId   String?
+  isPublished Boolean            @default(false)
+  isActive    Boolean            @default(true)
+  deletedAt   DateTime?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  questions   FeedbackQuestion[]
+  responses   FeedbackResponse[]
+
+  @@index([isPublished, isActive, deletedAt, createdAt])
+  @@index([contentType, contentId])
+  @@map("feedback_form")
+}
+
+model FeedbackQuestion {
+  id           String                   @id @default(ulid())
+  formId       String
+  form         FeedbackForm             @relation(fields: [formId], references: [id], onDelete: Cascade)
+  questionType QuestionType
+  label        String
+  isRequired   Boolean                  @default(true)
+  position     Int
+  deletedAt    DateTime?
+  createdAt    DateTime                 @default(now())
+  updatedAt    DateTime                 @updatedAt
+  options      FeedbackQuestionOption[]
+  answers      FeedbackAnswer[]
+
+  @@index([formId, position])
+  @@map("feedback_question")
+}
+
+model FeedbackQuestionOption {
+  id         String           @id @default(ulid())
+  questionId String
+  question   FeedbackQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  label      String
+  position   Int
+  deletedAt  DateTime?
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  @@index([questionId, position])
+  @@map("feedback_question_option")
+}
+
+model FeedbackResponse {
+  id        String           @id @default(ulid())
+  formId    String
+  form      FeedbackForm     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  userId    String?
+  user      User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  deletedAt DateTime?
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  answers   FeedbackAnswer[]
+
+  @@index([formId, createdAt])
+  @@index([userId, createdAt])
+  @@map("feedback_response")
+}
+
+model FeedbackAnswer {
+  id                String           @id @default(ulid())
+  responseId        String
+  response          FeedbackResponse @relation(fields: [responseId], references: [id], onDelete: Cascade)
+  questionId        String
+  question          FeedbackQuestion @relation(fields: [questionId], references: [id], onDelete: Restrict)
+  value             Json?
+  selectedOptionIds String[]         @default([])
+  deletedAt         DateTime?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  @@index([responseId])
+  @@index([questionId])
+  @@map("feedback_answer")
 }
