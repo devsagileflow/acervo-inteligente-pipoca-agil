@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 import {
   FeedbackForm,
   ListFeedbackFormsQuery,
-  PagedFeedbackFormsResponse,
+  PaginatedFeedbackFormsResponse,
 } from "@/packages/schemas";
 
 const PUBLIC_FORM_WHERE = {
@@ -13,7 +13,7 @@ const PUBLIC_FORM_WHERE = {
 
 export const listFeedbackForms = async (
   query: ListFeedbackFormsQuery,
-): Promise<PagedFeedbackFormsResponse> => {
+): Promise<PaginatedFeedbackFormsResponse> => {
   const page = query.page ?? 1;
   const pageSize = query.pageSize ?? 10;
   const where = {

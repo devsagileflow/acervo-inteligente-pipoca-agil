@@ -12,7 +12,7 @@ import {
   feedbackFormSchema,
   ListFeedbackFormsQuery,
   listFeedbackFormsQuerySchema,
-  PagedFeedbackFormsResponse,
+  PaginatedFeedbackFormsResponse,
   paginatedFeedbackFormsSchema,
   Result,
   resultSchema,
@@ -21,7 +21,7 @@ import {
 export default async function feedbackFormRoute(app: FastifyInstance) {
   app.get<{
     Querystring: ListFeedbackFormsQuery;
-    Reply: Result<PagedFeedbackFormsResponse>;
+    Reply: Result<PaginatedFeedbackFormsResponse>;
   }>(
     "/feedback-forms",
     {

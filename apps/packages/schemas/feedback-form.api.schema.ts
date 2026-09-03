@@ -23,6 +23,6 @@ export const paginatedFeedbackFormsSchema = z.object({
   total: z.number().int().nonnegative(),
   totalPages: z.number().int().nonnegative(),
 });
-export type PagedFeedbackFormsResponse = z.infer<
+export type PaginatedFeedbackFormsResponse = z.infer<
   typeof paginatedFeedbackFormsSchema
 >;
