@@ -1,4 +1,5 @@
 import { Result, Trail } from "@/packages/schemas";
+import { TrilhaDetail } from "./components/trilha-detail";
 
 const fetchData = async (trailId: string): Promise<Result<Trail>> => {
   try {
@@ -25,9 +26,13 @@ export default async function TrilhaPage({ params }: { params: Promise<{ trailId
   const { trailId } = await params;
   const fetchedData = await fetchData(trailId);
 
-  return (
-    <div>
-      <pre>{JSON.stringify(fetchedData, null, 2)}</pre>
-    </div>
-  );
+  if (!fetchedData.success || !fetchedData.data) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#1E1E1E] font-sans">
+        <p className="text-base text-[#F1F5F9]">Não foi possível carregar a trilha.</p>
+      </main>
+    );
+  }
+
+  return <TrilhaDetail trail={fetchedData.data} />;
 }

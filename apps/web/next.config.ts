@@ -21,6 +21,10 @@ const nextConfig: NextConfig = {
         hostname: process.env.NEXT_PUBLIC_API_URL?.replace(/^https?:\/\//, "") || "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "img.youtube.com",
+      },
     ],
   },
 };
