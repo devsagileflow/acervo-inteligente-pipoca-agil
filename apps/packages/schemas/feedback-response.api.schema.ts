@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { feedbackResponseSchema } from "./feedback-response.schema";
+import { contentTypeSchema } from "./content.schema";
 
 const answerBaseSchema = z.object({
   questionId: z.string().trim().min(1),
@@ -48,6 +49,8 @@ export type FeedbackAnswerInput = z.infer<typeof feedbackAnswerInputSchema>;
 
 export const createFeedbackResponseBodySchema = z.object({
   answers: z.array(feedbackAnswerInputSchema).min(1),
+  contentType: contentTypeSchema.nullish(),
+  contentId: z.string().nullish(),
 });
 export type CreateFeedbackResponseBody = z.infer<
   typeof createFeedbackResponseBodySchema

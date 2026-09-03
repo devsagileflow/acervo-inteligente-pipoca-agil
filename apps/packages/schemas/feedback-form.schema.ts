@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { contentTypeSchema } from "./content.schema";
 
 export const questionTypeSchema = z.enum([
   "STARS",
@@ -66,7 +67,7 @@ export const feedbackFormSchema = z.object({
   id: z.string(),
   title: z.string(),
   description: z.string().nullish(),
-  contentType: z.enum(["VIDEO", "TRAIL"]).nullish(),
+  contentType: contentTypeSchema.nullish(),
   contentId: z.string().nullish(),
   isPublished: z.boolean(),
   isActive: z.boolean(),

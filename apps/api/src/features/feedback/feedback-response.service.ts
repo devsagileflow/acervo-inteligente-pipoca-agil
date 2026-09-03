@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { ContentType, Prisma } from "@prisma/client";
 import { BadRequest } from "http-errors";
 
 import prisma from "@/lib/prisma";
@@ -75,6 +75,31 @@ const validateAnswers = (
   return answersByQuestionId;
 };
 
+const validateContentTypeAndId = async (
+  contentType: ContentType | undefined | null,
+  contentId: string | undefined | null,
+): Promise<{ contentType: ContentType | null; contentId: string | null }> => {
+  contentType = contentType ?? null;
+  contentId = contentId ?? null;
+  if (contentType && !contentId) throw new BadRequest("CONTENT_ID_REQUIRED");
+  if (!contentType && contentId) throw new BadRequest("CONTENT_TYPE_REQUIRED");
+  if (contentType && contentId) {
+    if (contentType === "VIDEO") {
+      const videoCount = await prisma.video.count({
+        where: { id: contentId },
+      });
+      if (videoCount === 0) throw new BadRequest("VIDEO_NOT_FOUND");
+    }
+    if (contentType === "TRAIL") {
+      const trailCount = await prisma.trail.count({
+        where: { id: contentId },
+      });
+      if (trailCount === 0) throw new BadRequest("TRAIL_NOT_FOUND");
+    }
+  }
+  return { contentType: contentType ?? null, contentId: contentId ?? null };
+};
+
 export const createFeedbackResponse = async (
   formId: string,
   body: CreateFeedbackResponseBody,
@@ -83,6 +108,11 @@ export const createFeedbackResponse = async (
   const form = await loadPublicFormWithQuestions(formId);
   if (!form) return null;
 
+  const { contentType, contentId } = await validateContentTypeAndId(
+    body.contentType,
+    body.contentId,
+  );
+
   const answersByQuestionId = validateAnswers(form.questions, body.answers);
 
   const response = await prisma.$transaction(async (tx) => {
@@ -90,6 +120,8 @@ export const createFeedbackResponse = async (
       data: {
         formId,
         userId: userId ?? null,
+        contentType,
+        contentId,
       },
     });
 

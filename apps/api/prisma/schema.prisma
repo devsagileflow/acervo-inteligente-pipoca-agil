@@ -273,15 +273,17 @@ model FeedbackQuestionOption {
 }
 
 model FeedbackResponse {
-  id        String           @id @default(ulid())
-  formId    String
-  form      FeedbackForm     @relation(fields: [formId], references: [id], onDelete: Cascade)
-  userId    String?
-  user      User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
-  deletedAt DateTime?
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
-  answers   FeedbackAnswer[]
+  id          String           @id @default(ulid())
+  formId      String
+  form        FeedbackForm     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  userId      String?
+  user        User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  contentType ContentType?
+  contentId   String?
+  deletedAt   DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  answers     FeedbackAnswer[]
 
   @@index([formId, createdAt])
   @@index([userId, createdAt])
