@@ -3,8 +3,8 @@
 import {
   ContentType,
   FeedbackForm,
-  FeedbackResponse,
-  feedbackResponseSchema,
+  CreateFeedbackResponseBody,
+  createFeedbackResponseBodySchema,
 } from "@acervo/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
@@ -15,11 +15,11 @@ import RatingControlledDemo from "@/components/shadcn-studio/rating/rating-07";
 
 type Props = {
   feedback_form: FeedbackForm;
-  content: ContentType;
+  contentType: ContentType;
   contentId: string;
 };
 
-export const RenderAPIForm = ({ feedback_form, content, contentId }: Props) => {
+export const RenderAPIForm = ({ feedback_form, contentType, contentId }: Props) => {
   const router = useRouter();
   const {
     watch,
@@ -28,11 +28,23 @@ export const RenderAPIForm = ({ feedback_form, content, contentId }: Props) => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting, isLoading, isSubmitSuccessful },
-  } = useForm<FeedbackResponse>({
-    resolver: zodResolver(feedbackResponseSchema) as Resolver<FeedbackResponse>,
+  } = useForm<CreateFeedbackResponseBody>({
+    resolver: zodResolver(createFeedbackResponseBodySchema) as Resolver<CreateFeedbackResponseBody>,
+    defaultValues: {
+      contentId: contentId,
+      contentType: contentType,
+      answers: feedback_form.questions?.map((question) => ({
+        questionId: question.id,
+        type: question.questionType,
+        value: question.questionType === "STARS" ? 0 : "",
+        isRequired: question.isRequired,
+      })) as CreateFeedbackResponseBody["answers"],
+    },
   });
 
-  const onSubmit = async (data: FeedbackResponse) => {
+  console.log("errors:", errors);
+
+  const onSubmit = async (data: CreateFeedbackResponseBody) => {
     await new Promise((resolve) => setTimeout(resolve, 1500));
     alert(JSON.stringify(data, null, 2));
   };
@@ -59,12 +71,18 @@ export const RenderAPIForm = ({ feedback_form, content, contentId }: Props) => {
                     <button>Dislike</button>
                   </div>
                 )) ||
-                  (question.questionType === "TEXT" && <Textarea />) ||
+                  (question.questionType === "TEXT" && (
+                    <Textarea {...register(`answers.${index}.value`)} />
+                  )) ||
                   (question.questionType === "MULTIPLE_CHOICE" && (
                     <div>
                       {question.options?.map((option, optionIndex) => (
                         <label key={optionIndex}>
-                          <input type="radio" name={`question-${index}`} value={option.id} />
+                          <input
+                            type="radio"
+                            {...register(`answers.${index}.optionIds`)}
+                            value={option.id}
+                          />
                           {option.label}
                         </label>
                       ))}
@@ -79,7 +97,11 @@ export const RenderAPIForm = ({ feedback_form, content, contentId }: Props) => {
                     <div>
                       {question.options?.map((option, optionIndex) => (
                         <label key={optionIndex}>
-                          <input type="radio" name={`question-${index}`} value={option.id} />
+                          <input
+                            type="radio"
+                            {...register(`answers.${index}.optionId`)}
+                            value={option.id}
+                          />
                           {option.label}
                         </label>
                       ))}
@@ -93,7 +115,14 @@ export const RenderAPIForm = ({ feedback_form, content, contentId }: Props) => {
                             ? (getValues(`answers.${index}.value`) as number)
                             : 0
                         }
-                        onChange={(value) => setValue(`answers.${index}.value`, value)}
+                        onChange={(value) =>
+                          setValue(`answers.${index}`, {
+                            questionId: question.id,
+                            type: question.questionType,
+                            value,
+                            isRequired: question.isRequired,
+                          })
+                        }
                         precision={1}
                       />
                     </div>
@@ -127,7 +156,8 @@ export const RenderAPIForm = ({ feedback_form, content, contentId }: Props) => {
           >
             <div className="flex h-10 w-64 items-center justify-center rounded-2xl bg-[#0F172A]">
               <p className="font-bold text-[#FBBF24]">
-                CONTINUAR {content === "TRAIL" ? "TRILHA" : content === "VIDEO" ? "VÍDEO" : ""}
+                CONTINUAR{" "}
+                {contentType === "TRAIL" ? "TRILHA" : contentType === "VIDEO" ? "VÍDEO" : ""}
               </p>
             </div>
           </button>
