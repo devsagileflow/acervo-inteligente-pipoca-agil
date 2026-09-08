@@ -1,6 +1,7 @@
-import type { PaginatedFeedbackFormsResponse, Result } from "@/packages/schemas/index";
+import type { FeedbackForm, Result } from "@/packages/schemas/index";
+import { RenderAPIForm } from "./components/renderAPIForm";
 
-const fetchData = async (): Promise<Result<PaginatedFeedbackFormsResponse>> => {
+const fetchData = async (): Promise<Result<FeedbackForm>> => {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL;
     const response = await fetch(`${baseUrl}/api/feedback-forms/feedback-form-global-trail`, {
@@ -9,7 +10,7 @@ const fetchData = async (): Promise<Result<PaginatedFeedbackFormsResponse>> => {
     });
     if (!response.ok) throw new Error("Failed to fetch form");
     const data = await response.json();
-    return data as Result<PaginatedFeedbackFormsResponse>;
+    return data as Result<FeedbackForm>;
   } catch (error) {
     console.error("Error fetching form:", error);
     return {
@@ -21,7 +22,24 @@ const fetchData = async (): Promise<Result<PaginatedFeedbackFormsResponse>> => {
   }
 };
 
-export default async function PageForm() {
+type Props = {
+  params: Promise<{ trailId: string }>;
+};
+
+export default async function PageForm({ params }: Props) {
+  const { trailId } = await params;
   const fetchedData = await fetchData();
-  return <pre>{JSON.stringify(fetchedData, null, 2)}</pre>;
+
+  if (!fetchedData.success || !fetchedData.data)
+    return (
+      <div>
+        <p>Failed to fetch feedback form: {fetchedData.message}</p>
+      </div>
+    );
+
+  return (
+    <div className="bg-[#0F172A]">
+      <RenderAPIForm form={fetchedData.data} content="TRAIL" contentId={trailId} />
+    </div>
+  );
 }

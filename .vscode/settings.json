@@ -13,5 +13,8 @@
   "conventionalCommits.scopes": ["web", "api", "db"],
   "chat.tools.terminal.autoApprove": {
     "openspec": true
+  },
+  "json.schemaDownload.trustedDomains": {
+    "https://ui.shadcn.com": true
   }
 }

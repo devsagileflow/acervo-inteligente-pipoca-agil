@@ -7,6 +7,7 @@ import { useMemo, useState } from "react";
 import type { Trail, TrailItem } from "@/packages/schemas/trail.api.schema";
 import { trackButtonClick } from "@/lib/analytics";
 import { extractYoutubeId, formatMinutes, getThumbnailUrl } from "./utils";
+import Link from "next/link";
 
 type TrilhaDetailProps = {
   trail: Trail;
@@ -85,34 +86,52 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
         <ol className="flex flex-col gap-7.5">
           {items
             .filter((item) => item.id !== selectedItem?.id)
-            .map((item) => {
+            .sort((a, b) => a.position - b.position)
+            .map((item, index) => {
               const video = item.content;
 
               if (!video) return null;
 
               return (
-                <li
-                  key={`trilha-item-${item.id}`}
-                  className={`flex cursor-pointer items-center rounded-2xl bg-linear-to-r from-[#6C3DBF] to-[#FCD34D] p-1`}
-                  onClick={() => handleItemClick(item)}
-                >
-                  <div className="flex min-w-0 flex-1 flex-col gap-1 rounded-2xl bg-[#0F172A] p-6">
-                    <div className="flex items-center justify-between gap-4">
-                      <h3 className="truncate text-base font-bold text-white">
-                        {item.position}. {video.title}
-                        <span className="text-[#FBBF24]">
-                          {` (${formatMinutes(video.durationInSeconds)})`}
-                        </span>
-                      </h3>
-                      <Image
-                        src={getThumbnailUrl(extractYoutubeId(video.youtubeUrl) || "")}
-                        alt="YouTube"
-                        width={92}
-                        height={92}
-                      />
+                <div key={`trilha-item-wrapper-${item.id}`} className="flex flex-col gap-6">
+                  <li
+                    className={`flex cursor-pointer items-center rounded-2xl bg-linear-to-r from-[#6C3DBF] to-[#FCD34D] p-1`}
+                    onClick={() => handleItemClick(item)}
+                  >
+                    <div className="flex min-w-0 flex-1 flex-col gap-1 rounded-2xl bg-[#0F172A] p-6">
+                      <div className="flex items-center justify-between gap-4">
+                        <h3 className="truncate text-base font-bold text-white">
+                          {item.position}. {video.title}
+                          <span className="text-[#FBBF24]">
+                            {` (${formatMinutes(video.durationInSeconds)})`}
+                          </span>
+                        </h3>
+                        <Image
+                          src={getThumbnailUrl(extractYoutubeId(video.youtubeUrl) || "")}
+                          alt="YouTube"
+                          width={92}
+                          height={92}
+                        />
+                      </div>
                     </div>
-                  </div>
-                </li>
+                  </li>
+                  {index === 1 && (
+                    <Link
+                      href={`/trilhas/${trail.id}/feedback`}
+                      className={`flex cursor-pointer items-center rounded-2xl bg-linear-to-r from-[#6C3DBF] to-[#FCD34D] p-1`}
+                    >
+                      <div className="flex flex-1 flex-col items-center gap-4 rounded-2xl bg-[#0F172A] p-6">
+                        <p className="text-xl text-white">
+                          Antes de continuar, que tal{" "}
+                          <strong>avalar sua experiência até aqui</strong>. É rapidinho.
+                        </p>
+                        <button className="h-10 w-64 cursor-pointer rounded-4xl bg-linear-to-r from-[#0F172A] to-[#6C3DBF]">
+                          <span className="font-bold text-[#FBBF24]">RESPONDER</span>
+                        </button>
+                      </div>
+                    </Link>
+                  )}
+                </div>
               );
             })}
         </ol>
