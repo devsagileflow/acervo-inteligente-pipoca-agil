@@ -8,6 +8,24 @@ import type { Trail, TrailItem } from "@/packages/schemas/trail.api.schema";
 
 const formatMinutes = (seconds: number) => `${Math.round(seconds / 60)} min`;
 
+const extractYoutubeId = (url: string): string | null => {
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+    /^([a-zA-Z0-9_-]{11})$/, // ID direta
+  ];
+
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match?.[1]) return match[1];
+  }
+  return null;
+};
+
+const getThumbnailUrl = (videoId: string): string => {
+  return `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
+  // Alternativas: hqdefault.jpg, mqdefault.jpg
+};
+
 type TrilhaDetailProps = {
   trail: Trail;
 };
@@ -47,7 +65,7 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
               </h2>
               <iframe
                 className="aspect-video w-full rounded-2xl"
-                src={`https://www.youtube.com/embed/${selectedItem.content.youtubeUrl.split("v=")[1] || selectedItem.content.youtubeUrl.split("youtu.be/")[1]}`}
+                src={`https://www.youtube.com/embed/${extractYoutubeId(selectedItem.content.youtubeUrl)}`}
                 title={selectedItem.content.title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
@@ -104,7 +122,7 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
                         </span>
                       </h3>
                       <Image
-                        src={`https://img.youtube.com/vi/${video.youtubeUrl.split("v=")[1] || video.youtubeUrl.split("youtu.be/")[1]}/maxresdefault.jpg`}
+                        src={getThumbnailUrl(extractYoutubeId(video.youtubeUrl) || "")}
                         alt="YouTube"
                         width={92}
                         height={92}
