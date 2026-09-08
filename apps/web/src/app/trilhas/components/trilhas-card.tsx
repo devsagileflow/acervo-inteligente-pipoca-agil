@@ -1,9 +1,9 @@
 import Image from "next/image";
-import Link from "next/link";
 import { CTAFooter } from "@/app/(marketing)/cta-footer";
 import { TrilhasHeader } from "./trilhas-header";
 import type { Trail } from "@/packages/schemas/trail.api.schema";
 import { getTrailStats } from "./trilha-content";
+import { CTAButton } from "./cta-button";
 
 const TrilhaTitle = ({ title }: { title: string }) => {
   const [firstWord, ...rest] = title.split(" ");
@@ -56,12 +56,7 @@ const TrilhaCard = ({ trilha }: { trilha: Trail }) => {
             </p>
           )}
 
-          <Link
-            href={`/trilhas/${trilha.id}`}
-            className="hover:bg-gradient-t-r inline-flex items-center gap-3 rounded-[15px] border-r-2 border-b-2 border-l-2 border-[#0F172A] bg-gradient-to-r from-[#0F172A] to-[#6C3DBF] px-10 py-2.5 text-sm font-bold tracking-wide text-[#FBBF24] uppercase shadow-[0_15px_40px_0_rgba(0,0,0,0.25)] transition hover:border-[#FBBF24] hover:from-[#FFFFFF] hover:to-[#FBBF24] hover:text-[#0F172A]"
-          >
-            INICIAR TRILHA
-          </Link>
+          <CTAButton trilha={trilha} />
         </div>
 
         <div className="flex flex-col gap-4">

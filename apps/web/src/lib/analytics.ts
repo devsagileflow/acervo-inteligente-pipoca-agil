@@ -76,3 +76,27 @@ export async function trackButtonClick(pagePath: string, buttonId: string) {
     },
   });
 }
+
+export async function trackVideoCompleted(pagePath: string, videoId: string) {
+  await trackEvent({
+    eventName: "video_complete",
+    pagePath,
+    referrer: typeof document !== "undefined" ? document.referrer || undefined : undefined,
+    properties: {
+      videoId,
+      pathname: pagePath,
+    },
+  });
+}
+
+export async function trackVideoStarted(pagePath: string, videoId: string) {
+  await trackEvent({
+    eventName: "video_play",
+    pagePath,
+    referrer: typeof document !== "undefined" ? document.referrer || undefined : undefined,
+    properties: {
+      videoId,
+      pathname: pagePath,
+    },
+  });
+}
