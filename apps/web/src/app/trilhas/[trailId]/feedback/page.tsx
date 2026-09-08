@@ -39,7 +39,7 @@ export default async function PageForm({ params }: Props) {
 
   return (
     <div className="bg-[#0F172A]">
-      <RenderAPIForm form={fetchedData.data} content="TRAIL" contentId={trailId} />
+      <RenderAPIForm feedback_form={fetchedData.data} content="TRAIL" contentId={trailId} />
     </div>
   );
 }

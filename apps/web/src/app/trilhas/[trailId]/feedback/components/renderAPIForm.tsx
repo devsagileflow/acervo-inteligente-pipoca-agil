@@ -8,18 +8,18 @@ import {
 } from "@acervo/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import Link from "next/link";
 import { Resolver, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { Textarea } from "@/components/ui";
+import RatingControlledDemo from "@/components/shadcn-studio/rating/rating-07";
 
 type Props = {
-  form: FeedbackForm;
+  feedback_form: FeedbackForm;
   content: ContentType;
   contentId: string;
 };
 
-export const RenderAPIForm = ({ form, content, contentId }: Props) => {
+export const RenderAPIForm = ({ feedback_form, content, contentId }: Props) => {
   const router = useRouter();
   const {
     watch,
@@ -41,7 +41,7 @@ export const RenderAPIForm = ({ form, content, contentId }: Props) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       {!isSubmitSuccessful ? (
         <>
-          {form.questions
+          {feedback_form.questions
             ?.sort((a, b) => a.position - b.position)
             .map((question, index) => (
               <div key={index}>
@@ -87,9 +87,15 @@ export const RenderAPIForm = ({ form, content, contentId }: Props) => {
                   )) ||
                   (question.questionType === "STARS" && (
                     <div>
-                      {Array.from({ length: 5 }, (_, starIndex) => (
-                        <button key={starIndex}>{starIndex + 1} Star</button>
-                      ))}
+                      <RatingControlledDemo
+                        initialValue={
+                          getValues(`answers.${index}.value`)
+                            ? (getValues(`answers.${index}.value`) as number)
+                            : 0
+                        }
+                        onChange={(value) => setValue(`answers.${index}.value`, value)}
+                        precision={1}
+                      />
                     </div>
                   ))}
               </div>
