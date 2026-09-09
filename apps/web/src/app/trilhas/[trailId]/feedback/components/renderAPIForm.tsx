@@ -12,6 +12,7 @@ import { Resolver, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { Textarea } from "@/components/ui";
 import RatingControlledDemo from "@/components/shadcn-studio/rating/rating-07";
+import { useEffect } from "react";
 
 type Props = {
   feedback_form: FeedbackForm;
@@ -22,7 +23,6 @@ type Props = {
 export const RenderAPIForm = ({ feedback_form, contentType, contentId }: Props) => {
   const router = useRouter();
   const {
-    watch,
     setValue,
     getValues,
     register,
@@ -50,16 +50,19 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId }: Props) 
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex max-w-250 flex-col items-center justify-center gap-8"
+    >
       {!isSubmitSuccessful ? (
         <>
           {feedback_form.questions
             ?.sort((a, b) => a.position - b.position)
             .map((question, index) => (
-              <div key={index}>
-                <div className="m-8 flex items-center justify-center rounded-tr-3xl rounded-b-3xl bg-linear-to-r from-[#6C3DBF] to-[#FCD34D] p-1">
+              <div key={index} className="flex w-full flex-col gap-4">
+                <div className="flex items-center justify-center rounded-tr-3xl rounded-b-3xl bg-linear-to-r from-[#6C3DBF] to-[#FCD34D] p-1">
                   <div className="flex w-full items-center justify-center rounded-tr-3xl rounded-b-3xl bg-[#0F172A]">
-                    <p className="px-6 py-3 text-center text-3xl text-[#F1F5F9]">
+                    <p className="px-20 py-8 text-center text-3xl font-bold text-[#F1F5F9]">
                       {question.label}
                       {question.isRequired ? <span className="text-[#FBBF24]">*</span> : null}
                     </p>
@@ -72,7 +75,14 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId }: Props) 
                   </div>
                 )) ||
                   (question.questionType === "TEXT" && (
-                    <Textarea {...register(`answers.${index}.value`)} />
+                    <>
+                      <Textarea {...register(`answers.${index}.value`)} />
+                      {errors.answers?.[index]?.message && (
+                        <p className="mt-2 text-center text-red-500">
+                          {errors.answers[index].message}
+                        </p>
+                      )}
+                    </>
                   )) ||
                   (question.questionType === "MULTIPLE_CHOICE" && (
                     <div>
@@ -125,6 +135,11 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId }: Props) 
                         }
                         precision={1}
                       />
+                      {errors.answers?.[index]?.message && (
+                        <p className="mt-2 text-center text-red-500">
+                          {errors.answers[index].message}
+                        </p>
+                      )}
                     </div>
                   ))}
               </div>

@@ -14,7 +14,7 @@ export const starsAnswerSchema = answerBaseSchema
     isRequired: z.boolean(),
   })
   .refine((data) => !data.isRequired || (data.value >= 1 && data.value <= 5), {
-    message: "Valor deve estar entre 1 e 5 se a pergunta for obrigatória",
+    message: "Item obrigatório! Sua avaliação é importante para nós.",
   });
 
 export const scaleAnswerSchema = answerBaseSchema
@@ -24,7 +24,7 @@ export const scaleAnswerSchema = answerBaseSchema
     isRequired: z.boolean(),
   })
   .refine((data) => !data.isRequired || (data.value >= 0 && data.value <= 10), {
-    message: "Valor deve estar entre 0 e 10 se a pergunta for obrigatória",
+    message: "Sua resposta é importante para nós.",
   });
 
 export const likeDislikeAnswerSchema = answerBaseSchema
@@ -37,8 +37,7 @@ export const likeDislikeAnswerSchema = answerBaseSchema
     (data) =>
       !data.isRequired || data.value === "like" || data.value === "dislike",
     {
-      message:
-        "Valor deve ser 'like' ou 'dislike' se a pergunta for obrigatória",
+      message: "Item obrigatório! Sua avaliação é importante para nós.",
     },
   );
 
@@ -49,7 +48,7 @@ export const textAnswerSchema = answerBaseSchema
     isRequired: z.boolean(),
   })
   .refine((data) => !data.isRequired || data.value.trim().length > 0, {
-    message: "O valor deve ser preenchido se a pergunta for obrigatória",
+    message: "Sua resposta é importante para nós.",
   });
 
 export const multipleChoiceAnswerSchema = answerBaseSchema
@@ -59,8 +58,7 @@ export const multipleChoiceAnswerSchema = answerBaseSchema
     isRequired: z.boolean(),
   })
   .refine((data) => !data.isRequired || data.optionIds.length > 0, {
-    message:
-      "Deve selecionar pelo menos uma opção se a pergunta for obrigatória",
+    message: "Item obrigatório! Sua avaliação é importante para nós.",
   });
 
 export const singleChoiceAnswerSchema = answerBaseSchema
@@ -70,7 +68,7 @@ export const singleChoiceAnswerSchema = answerBaseSchema
     isRequired: z.boolean(),
   })
   .refine((data) => !data.isRequired || data.optionId.trim().length > 0, {
-    message: "Deve selecionar uma opção se a pergunta for obrigatória",
+    message: "Item obrigatório! Sua avaliação é importante para nós.",
   });
 
 export const feedbackAnswerInputSchema = z.discriminatedUnion("type", [

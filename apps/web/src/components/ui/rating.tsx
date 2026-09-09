@@ -16,7 +16,7 @@ type IconElementProps = {
 const ratingVariants = cva("transition-colors", {
   variants: {
     variant: {
-      default: "text-foreground fill-current",
+      default: "text-yellow-500 fill-current",
       destructive: "text-destructive fill-current",
       outline: "text-muted-foreground fill-transparent stroke-current",
       secondary: "text-muted-foreground fill-current",
@@ -348,7 +348,7 @@ function Rating({
           key={key}
           data-slot="rating-star"
           className={cn(
-            "relative",
+            "relative w-20",
             isInteractive && "transition-transform hover:scale-110",
             disabled && "cursor-not-allowed",
           )}

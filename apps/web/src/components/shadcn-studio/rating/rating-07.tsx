@@ -14,11 +14,11 @@ const RatingControlledDemo = ({ initialValue = 0, onChange, precision }: Props) 
   const [starCount, setStarCount] = useState(initialValue);
 
   return (
-    <div className="flex items-baseline-last justify-between gap-4 sm:items-center">
-      <div className="flex gap-4 max-sm:flex-col sm:items-center">
+    <div className="flex w-full items-baseline-last justify-center gap-4 sm:items-center">
+      <div className="flex text-[#F1F5F9] max-sm:flex-col sm:items-center">
         <Rating
           name="teste"
-          labels={["Muito ruim", "Ruim", "Regular", "Bom", "Muito bom"]}
+          labels={["Péssimo", "Ruim", "Regular", "Bom", "Excelente"]}
           size={36}
           precision={precision}
           value={starCount}
