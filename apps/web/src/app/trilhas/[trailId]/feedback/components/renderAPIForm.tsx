@@ -13,6 +13,7 @@ import {
 } from "@acervo/schemas";
 import { RatingControlled } from "@/components/shadcn-studio";
 import { Textarea } from "@/components/ui";
+import { useEffect } from "react";
 
 type Props = {
   feedback_form: FeedbackForm;
@@ -33,142 +34,184 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId }: Props) 
     defaultValues: {
       contentId: contentId,
       contentType: contentType,
-      answers: feedback_form.questions?.map((question) => ({
-        questionId: question.id,
-        type: question.questionType,
-        value: question.questionType === "STARS" ? 0 : "",
-        isRequired: question.isRequired,
-      })) as CreateFeedbackResponseBody["answers"],
+      answers:
+        feedback_form.questions?.map((question) => ({
+          questionId: question.id,
+          type: question.questionType,
+          isRequired: question.isRequired,
+        })) || [],
     },
   });
 
   console.log("errors:", errors);
 
   const onSubmit = async (data: CreateFeedbackResponseBody) => {
-    alert(JSON.stringify(data, null, 2));
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+      const response = await fetch(`${baseUrl}/api/feedback-forms/${feedback_form.id}/responses`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) console.error("Failed to submit feedback form response", response);
+    } catch (error) {
+      console.error("An error occurred while submitting the feedback form response", error);
+    }
   };
 
+  useEffect(() => {
+    if (isSubmitSuccessful) return;
+
+    const timeout = setTimeout(() => {
+      if (!errors || Object.keys(errors.answers || {}).length === 0) return;
+
+      const firstErrorKey = Object.keys(errors.answers || {})[0];
+
+      if (firstErrorKey) {
+        const errorElement = document.getElementById(`label.answers.${firstErrorKey}`);
+        if (errorElement) {
+          errorElement.focus();
+          errorElement.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }
+    }, 100);
+    return () => clearTimeout(timeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [errors]);
+
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="my-30 flex max-w-250 flex-col items-center justify-center gap-8"
-    >
-      {false && !isSubmitSuccessful ? (
-        <>
-          {feedback_form.questions
-            ?.sort((a, b) => a.position - b.position)
-            .map((question, index) => (
-              <div key={index} className="flex w-full flex-col gap-4">
-                {index === 0 ? (
-                  <div className="flex flex-col items-center justify-center gap-12">
-                    <Image src={"/svg/fi-rr-comment.svg"} alt={"Feedback"} width={80} height={80} />
-                    <div className="flex w-full items-center justify-center rounded-tr-3xl rounded-b-3xl bg-linear-to-r from-[#6C3DBF] to-[#FCD34D] p-1">
-                      <div className="flex w-full items-center justify-center rounded-tr-3xl rounded-b-3xl bg-[#0F172A]">
-                        <p className="px-20 py-8 text-center text-3xl font-bold text-[#F1F5F9]">
-                          {question.label}
-                          {question.isRequired ? <span className="text-[#FBBF24]">*</span> : null}
-                        </p>
+    <div className="my-30 max-w-250">
+      {!isSubmitSuccessful ? (
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col items-center justify-center gap-8"
+        >
+          <>
+            {feedback_form.questions
+              ?.sort((a, b) => a.position - b.position)
+              .map((question, index) => (
+                <div key={index} className="flex w-full flex-col gap-4">
+                  {index === 0 ? (
+                    <div className="flex flex-col items-center justify-center gap-12">
+                      <Image
+                        src={"/svg/fi-rr-comment.svg"}
+                        alt={"Feedback"}
+                        width={80}
+                        height={80}
+                      />
+                      <div className="flex w-full items-center justify-center rounded-tr-3xl rounded-b-3xl bg-linear-to-r from-[#6C3DBF] to-[#FCD34D] p-1">
+                        <div className="flex w-full items-center justify-center rounded-tr-3xl rounded-b-3xl bg-[#0F172A]">
+                          <p
+                            id={`label.answers.${index}`}
+                            className="px-20 py-8 text-center text-3xl font-bold text-[#F1F5F9]"
+                          >
+                            {question.label}
+                            {question.isRequired ? <span className="text-[#FBBF24]">*</span> : null}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ) : (
-                  <div className="flex w-full rounded-tr-3xl rounded-b-3xl bg-[#0F172A]">
-                    <p className="text-3xl text-[#F1F5F9]">
-                      {question.label}
-                      {question.isRequired ? <span className="text-[#FBBF24]">*</span> : null}
-                    </p>
-                  </div>
-                )}
-                {(question.questionType === "LIKE_DISLIKE" && (
-                  <div>
-                    <button>Like</button>
-                    <button>Dislike</button>
-                  </div>
-                )) ||
-                  (question.questionType === "TEXT" && (
-                    <>
-                      <Textarea
-                        placeholder="Escreva aqui sua resposta"
-                        className="h-68 text-4xl"
-                        {...register(`answers.${index}.value`)}
-                      />
-                      {errors.answers?.[index]?.message && (
-                        <p className="mt-2 text-center text-red-500">
-                          {errors.answers[index].message}
-                        </p>
-                      )}
-                    </>
-                  )) ||
-                  (question.questionType === "MULTIPLE_CHOICE" && (
+                  ) : (
+                    <div className="flex w-full rounded-tr-3xl rounded-b-3xl bg-[#0F172A]">
+                      <p id={`label.answers.${index}`} className="text-3xl text-[#F1F5F9]">
+                        {question.label}
+                        {question.isRequired ? <span className="text-[#FBBF24]">*</span> : null}
+                      </p>
+                    </div>
+                  )}
+                  {(question.questionType === "LIKE_DISLIKE" && (
                     <div>
-                      {question.options?.map((option, optionIndex) => (
-                        <label key={optionIndex}>
-                          <input
-                            type="radio"
-                            {...register(`answers.${index}.optionIds`)}
-                            value={option.id}
-                          />
-                          {option.label}
-                        </label>
-                      ))}
+                      <button>Like</button>
+                      <button>Dislike</button>
                     </div>
                   )) ||
-                  (question.questionType === "SCALE_0_10" && (
-                    <div>
-                      <input type="range" min="0" max="10" />
-                    </div>
-                  )) ||
-                  (question.questionType === "SINGLE_CHOICE" && (
-                    <div>
-                      {question.options?.map((option, optionIndex) => (
-                        <label key={optionIndex}>
-                          <input
-                            type="radio"
-                            {...register(`answers.${index}.optionId`)}
-                            value={option.id}
-                          />
-                          {option.label}
-                        </label>
-                      ))}
-                    </div>
-                  )) ||
-                  (question.questionType === "STARS" && (
-                    <div>
-                      <RatingControlled
-                        initialValue={
-                          getValues(`answers.${index}.value`)
-                            ? (getValues(`answers.${index}.value`) as number)
-                            : 0
-                        }
-                        onChange={(value) =>
-                          setValue(`answers.${index}`, {
-                            questionId: question.id,
-                            type: question.questionType,
-                            value,
-                            isRequired: question.isRequired,
-                          })
-                        }
-                        precision={1}
-                      />
-                      {errors.answers?.[index]?.message && (
-                        <p className="mt-2 text-center text-red-500">
-                          {errors.answers[index].message}
-                        </p>
-                      )}
-                    </div>
-                  ))}
-              </div>
-            ))}
-          <button
-            className="h-10 w-64 cursor-pointer rounded-4xl bg-linear-to-r from-[#0F172A] to-[#6C3DBF]"
-            type="submit"
-            disabled={isSubmitting || isLoading}
-          >
-            <span className="font-bold text-[#FBBF24]">
-              {isSubmitting || isLoading ? "ENVIANDO..." : "ENVIAR FEEDBACK"}
-            </span>
-          </button>
-        </>
+                    (question.questionType === "TEXT" && (
+                      <>
+                        <Textarea
+                          placeholder="Escreva aqui sua resposta"
+                          className="h-68 text-4xl"
+                          {...register(`answers.${index}.value`)}
+                        />
+                        {errors.answers?.[index]?.message && (
+                          <p className="mt-2 text-center text-red-500">
+                            {errors.answers[index].message}
+                          </p>
+                        )}
+                      </>
+                    )) ||
+                    (question.questionType === "MULTIPLE_CHOICE" && (
+                      <div>
+                        {question.options?.map((option, optionIndex) => (
+                          <label key={optionIndex}>
+                            <input
+                              type="radio"
+                              {...register(`answers.${index}.optionIds`)}
+                              value={option.id}
+                            />
+                            {option.label}
+                          </label>
+                        ))}
+                      </div>
+                    )) ||
+                    (question.questionType === "SCALE_0_10" && (
+                      <div>
+                        <input type="range" min="0" max="10" />
+                      </div>
+                    )) ||
+                    (question.questionType === "SINGLE_CHOICE" && (
+                      <div>
+                        {question.options?.map((option, optionIndex) => (
+                          <label key={optionIndex}>
+                            <input
+                              type="radio"
+                              {...register(`answers.${index}.optionId`)}
+                              value={option.id}
+                            />
+                            {option.label}
+                          </label>
+                        ))}
+                      </div>
+                    )) ||
+                    (question.questionType === "STARS" && (
+                      <div>
+                        <RatingControlled
+                          initialValue={
+                            getValues(`answers.${index}.value`)
+                              ? (getValues(`answers.${index}.value`) as number)
+                              : 0
+                          }
+                          onChange={(value) =>
+                            setValue(`answers.${index}`, {
+                              questionId: question.id,
+                              type: question.questionType,
+                              value,
+                              isRequired: question.isRequired,
+                            })
+                          }
+                          precision={1}
+                        />
+                        {errors.answers?.[index]?.message && (
+                          <p className="mt-2 text-center text-red-500">
+                            {errors.answers[index].message}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                </div>
+              ))}
+            <button
+              className="h-10 w-64 cursor-pointer rounded-4xl bg-linear-to-r from-[#0F172A] to-[#6C3DBF]"
+              type="submit"
+              disabled={isSubmitting || isLoading}
+            >
+              <span className="font-bold text-[#FBBF24]">
+                {isSubmitting || isLoading ? "ENVIANDO..." : "ENVIAR FEEDBACK"}
+              </span>
+            </button>
+          </>
+        </form>
       ) : (
         <div className="flex flex-col items-center gap-8">
           <Image
@@ -193,6 +236,6 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId }: Props) 
           </button>
         </div>
       )}
-    </form>
+    </div>
   );
 };
