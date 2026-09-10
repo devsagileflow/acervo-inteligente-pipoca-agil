@@ -1,18 +1,18 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { Resolver, useForm } from "react-hook-form";
+
 import {
   ContentType,
   FeedbackForm,
   CreateFeedbackResponseBody,
   createFeedbackResponseBodySchema,
 } from "@acervo/schemas";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
-import { Resolver, useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { RatingControlled } from "@/components/shadcn-studio";
 import { Textarea } from "@/components/ui";
-import RatingControlledDemo from "@/components/shadcn-studio/rating/rating-07";
-import { useEffect } from "react";
 
 type Props = {
   feedback_form: FeedbackForm;
@@ -45,29 +45,40 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId }: Props) 
   console.log("errors:", errors);
 
   const onSubmit = async (data: CreateFeedbackResponseBody) => {
-    await new Promise((resolve) => setTimeout(resolve, 1500));
     alert(JSON.stringify(data, null, 2));
   };
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex max-w-250 flex-col items-center justify-center gap-8"
+      className="my-30 flex max-w-250 flex-col items-center justify-center gap-8"
     >
-      {!isSubmitSuccessful ? (
+      {false && !isSubmitSuccessful ? (
         <>
           {feedback_form.questions
             ?.sort((a, b) => a.position - b.position)
             .map((question, index) => (
               <div key={index} className="flex w-full flex-col gap-4">
-                <div className="flex items-center justify-center rounded-tr-3xl rounded-b-3xl bg-linear-to-r from-[#6C3DBF] to-[#FCD34D] p-1">
-                  <div className="flex w-full items-center justify-center rounded-tr-3xl rounded-b-3xl bg-[#0F172A]">
-                    <p className="px-20 py-8 text-center text-3xl font-bold text-[#F1F5F9]">
+                {index === 0 ? (
+                  <div className="flex flex-col items-center justify-center gap-12">
+                    <Image src={"/svg/fi-rr-comment.svg"} alt={"Feedback"} width={80} height={80} />
+                    <div className="flex w-full items-center justify-center rounded-tr-3xl rounded-b-3xl bg-linear-to-r from-[#6C3DBF] to-[#FCD34D] p-1">
+                      <div className="flex w-full items-center justify-center rounded-tr-3xl rounded-b-3xl bg-[#0F172A]">
+                        <p className="px-20 py-8 text-center text-3xl font-bold text-[#F1F5F9]">
+                          {question.label}
+                          {question.isRequired ? <span className="text-[#FBBF24]">*</span> : null}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex w-full rounded-tr-3xl rounded-b-3xl bg-[#0F172A]">
+                    <p className="text-3xl text-[#F1F5F9]">
                       {question.label}
                       {question.isRequired ? <span className="text-[#FBBF24]">*</span> : null}
                     </p>
                   </div>
-                </div>
+                )}
                 {(question.questionType === "LIKE_DISLIKE" && (
                   <div>
                     <button>Like</button>
@@ -76,7 +87,11 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId }: Props) 
                 )) ||
                   (question.questionType === "TEXT" && (
                     <>
-                      <Textarea {...register(`answers.${index}.value`)} />
+                      <Textarea
+                        placeholder="Escreva aqui sua resposta"
+                        className="h-68 text-4xl"
+                        {...register(`answers.${index}.value`)}
+                      />
                       {errors.answers?.[index]?.message && (
                         <p className="mt-2 text-center text-red-500">
                           {errors.answers[index].message}
@@ -119,7 +134,7 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId }: Props) 
                   )) ||
                   (question.questionType === "STARS" && (
                     <div>
-                      <RatingControlledDemo
+                      <RatingControlled
                         initialValue={
                           getValues(`answers.${index}.value`)
                             ? (getValues(`answers.${index}.value`) as number)
@@ -159,18 +174,18 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId }: Props) 
           <Image
             src="/img/form-submit-successful.png"
             alt="Form submit successful"
-            width={200}
-            height={200}
+            width={415}
+            height={368}
           />
-          <p className="text-3xl font-bold">
+          <p className="text-3xl font-bold text-[#F1F5F9]">
             Recebemos seu feedback com <span className="text-[#FBBF24]">sucesso</span>!
           </p>
           <button
             onClick={() => router.push("/")}
-            className="rounded-2xl bg-linear-to-r from-[#FFF9E9] to-[#FBBF24] p-1"
+            className="cursor-pointer rounded-4xl bg-linear-to-r from-[#FFF9E9] to-[#FBBF24] p-1"
           >
-            <div className="flex h-10 w-64 items-center justify-center rounded-2xl bg-[#0F172A]">
-              <p className="font-bold text-[#FBBF24]">
+            <div className="flex items-center justify-center rounded-4xl bg-[#0F172A]">
+              <p className="px-22 py-4 text-xl font-bold text-[#FBBF24]">
                 CONTINUAR{" "}
                 {contentType === "TRAIL" ? "TRILHA" : contentType === "VIDEO" ? "VÍDEO" : ""}
               </p>

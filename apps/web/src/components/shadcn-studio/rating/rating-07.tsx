@@ -10,7 +10,7 @@ type Props = {
   precision: number;
 };
 
-const RatingControlledDemo = ({ initialValue = 0, onChange, precision }: Props) => {
+export const RatingControlled = ({ initialValue = 0, onChange, precision }: Props) => {
   const [starCount, setStarCount] = useState(initialValue);
 
   return (
@@ -31,5 +31,3 @@ const RatingControlledDemo = ({ initialValue = 0, onChange, precision }: Props) 
     </div>
   );
 };
-
-export default RatingControlledDemo;
