@@ -51,9 +51,11 @@ const validateAnswers = (
       const validOptionIds = new Set(question.options.map((o) => o.id));
       const selected =
         answer.type === "MULTIPLE_CHOICE"
-          ? answer.optionIds
+          ? answer.optionIds || []
           : [answer.optionId];
-      const invalid = selected.filter((id) => !validOptionIds.has(id));
+      const invalid = selected.filter(
+        (id) => id != null && !validOptionIds.has(id),
+      );
       if (invalid.length > 0)
         throw new BadRequest(
           `INVALID_OPTION: ${answer.questionId} (${invalid.join(", ")})`,
@@ -131,13 +133,13 @@ export const createFeedbackResponse = async (
         questionId: answer.questionId,
         value:
           "value" in answer
-            ? (answer.value as Prisma.InputJsonValue)
+            ? (answer.value! as Prisma.InputJsonValue)
             : undefined,
         selectedOptionIds:
           answer.type === "MULTIPLE_CHOICE"
-            ? answer.optionIds
+            ? answer.optionIds!
             : answer.type === "SINGLE_CHOICE"
-              ? [answer.optionId]
+              ? [answer.optionId!]
               : [],
       })),
     });
