@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
 
-import { createAnalyticsEvent, getClickSummary } from "./analytics.service";
+import { createAnalyticsEvent, getAnalyticsEvents } from "./analytics.service";
 import {
   AnalyticsEventBody,
   analyticsEventBodySchema,
@@ -11,31 +11,22 @@ import {
 
 export default async function analyticsRoute(app: FastifyInstance) {
   app.get(
-    "/analytics/click-summary",
+    "/analytics",
     {
       schema: {
-        description: "Retorna um resumo dos cliques.",
+        description: "Retorna todos os eventos de analytics.",
         tags: ["Analytics"],
         response: {
-          200: {
-            type: "array",
-            items: {
-              type: "object",
-              properties: {
-                targetId: { type: "string", nullable: true },
-                clicks: { type: "number" },
-              },
-            },
-          },
+          200: resultSchema(analyticsEventSchema.array()),
         },
       },
     },
     async (_, reply) => {
-      const clickSummary = await getClickSummary();
+      const analyticsEvents = await getAnalyticsEvents();
 
       const result: Result = {
         success: true,
-        data: clickSummary,
+        data: analyticsEvents,
         code: 200,
       };
 

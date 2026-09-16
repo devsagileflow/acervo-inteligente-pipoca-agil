@@ -10,6 +10,7 @@ import { extractYoutubeId, formatMinutes, getThumbnailUrl } from "./utils";
 import Link from "next/link";
 import { TrilhasHeader } from "../../components/trilhas-header";
 import { CTAFooter } from "@/app/(marketing)/cta-footer";
+import { VideoFrame } from "./video-frame";
 
 type TrilhaDetailProps = {
   trail: Trail;
@@ -52,8 +53,7 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
         <div className="flex w-full max-w-7xl flex-col gap-5">
           <Link
             href="/trilhas"
-            className="flex w-fit items-center gap-2 text-[#F1F5F9] font-normal leading-none tracking-normal text-lg"
-            onClick={() => trackButtonClick(`/trilhas/${trail.id}`, "trilha-voltar")}
+            className="flex w-fit items-center gap-2 text-lg leading-none font-normal tracking-normal text-[#F1F5F9]"
           >
             <ArrowLeft className="size-4" />
             Voltar
@@ -79,13 +79,9 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
                     <h2 className="text-center text-xl font-bold text-[#FBBF24] sm:text-2xl">
                       {selectedItem.content.title}
                     </h2>
-                    <iframe
-                      className="aspect-video w-full rounded-2xl"
-                      src={`https://www.youtube.com/embed/${extractYoutubeId(selectedItem.content.youtubeUrl)}`}
-                      title={selectedItem.content.title}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
+                    <div className="w-full text-center">
+                      <VideoFrame item={selectedItem} />
+                    </div>
                   </>
                 ) : (
                   <div className="flex aspect-video w-full items-center justify-center rounded-2xl bg-[#1E293B] text-white">
@@ -114,7 +110,7 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
                 Outros vídeos da trilha:
               </h2>
               <ol
-                className="scrollbar-thin scrollbar-thumb-[#6C3DBF] scrollbar-track-[#1E293B] flex min-w-0 flex-col gap-7.5 overflow-y-auto pr-2 lg:pr-4"
+                className="flex min-w-0 scrollbar-thin scrollbar-thumb-[#6C3DBF] scrollbar-track-[#1E293B] flex-col gap-7.5 overflow-y-auto pr-2 lg:pr-4"
                 style={leftColumnHeight ? { maxHeight: leftColumnHeight } : undefined}
               >
                 {items
@@ -126,7 +122,10 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
                     if (!video) return null;
 
                     return (
-                      <div key={`trilha-item-wrapper-${item.id}`} className="flex min-w-0 flex-col gap-6">
+                      <div
+                        key={`trilha-item-wrapper-${item.id}`}
+                        className="flex min-w-0 flex-col gap-6"
+                      >
                         <li
                           className="flex min-w-0 cursor-pointer items-center rounded-2xl bg-linear-to-r from-[#6C3DBF] to-[#FCD34D] p-1"
                           onClick={() => handleItemClick(item)}

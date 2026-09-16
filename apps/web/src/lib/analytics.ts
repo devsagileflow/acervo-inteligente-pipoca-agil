@@ -1,4 +1,5 @@
-type AnalyticsEventName = "page_view" | "click" | "scroll_depth" | "video_play" | "video_complete";
+type AnalyticsEventName =
+  "page_view" | "click" | "scroll_depth" | "video_play" | "video_complete" | "video_paused";
 
 type AnalyticsEventPayload = {
   eventName: AnalyticsEventName;
@@ -65,10 +66,11 @@ export async function trackPageView(pagePath: string) {
   });
 }
 
-export async function trackButtonClick(pagePath: string, buttonId: string) {
+export async function trackButtonClick(pagePath: string, buttonId: string, targetId?: string) {
   await trackEvent({
     eventName: "click",
     pagePath,
+    targetId,
     referrer: typeof document !== "undefined" ? document.referrer || undefined : undefined,
     properties: {
       buttonId,
@@ -92,6 +94,18 @@ export async function trackVideoCompleted(pagePath: string, videoId: string) {
 export async function trackVideoStarted(pagePath: string, videoId: string) {
   await trackEvent({
     eventName: "video_play",
+    pagePath,
+    referrer: typeof document !== "undefined" ? document.referrer || undefined : undefined,
+    properties: {
+      videoId,
+      pathname: pagePath,
+    },
+  });
+}
+
+export async function trackVideoPaused(pagePath: string, videoId: string) {
+  await trackEvent({
+    eventName: "video_paused",
     pagePath,
     referrer: typeof document !== "undefined" ? document.referrer || undefined : undefined,
     properties: {

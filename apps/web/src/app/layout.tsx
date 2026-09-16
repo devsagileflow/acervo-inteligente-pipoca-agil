@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Sora } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
+import { PageViewTracker } from "./page-view-tracker";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -33,7 +35,12 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${sora.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col font-sans">{children}</body>
+      <body className="flex min-h-full flex-col font-sans">
+        <Suspense fallback={null}>
+          <PageViewTracker />
+        </Suspense>
+        {children}
+      </body>
     </html>
   );
 }

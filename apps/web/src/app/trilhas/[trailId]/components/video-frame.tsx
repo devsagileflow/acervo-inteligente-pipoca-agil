@@ -4,7 +4,7 @@
 import { TrailItem } from "@/packages/schemas";
 import { useCallback, useEffect, useRef } from "react";
 import { extractYoutubeId } from "./utils";
-import { trackVideoCompleted, trackVideoStarted } from "@/lib/analytics";
+import { trackVideoCompleted, trackVideoStarted, trackVideoPaused } from "@/lib/analytics";
 
 // Estender a interface Window para incluir as propriedades do YouTube
 declare global {
@@ -21,14 +21,10 @@ export function VideoFrame({ item }: { item: TrailItem }) {
 
   const onPlayerStateChange = useCallback(
     (event: any) => {
-      console.log("Player state changed:", event.data);
-      if (event.data === window.YT.PlayerState.ENDED) {
-        // Vídeo terminou de ser assistido
-        trackVideoCompleted(item?.id, anonymousId);
-      } else if (event.data === window.YT.PlayerState.PLAYING) {
-        // Vídeo iniciou
+      if (event.data === window.YT.PlayerState.ENDED) trackVideoCompleted(item?.id, anonymousId);
+      else if (event.data === window.YT.PlayerState.PLAYING)
         trackVideoStarted(item?.id, anonymousId);
-      }
+      else if (event.data === window.YT.PlayerState.PAUSED) trackVideoPaused(item?.id, anonymousId);
     },
     [anonymousId, item?.id],
   );
@@ -55,6 +51,6 @@ export function VideoFrame({ item }: { item: TrailItem }) {
 
   return (
     // ...
-    <div ref={iframeRef} id="youtube-player"></div>
+    <div ref={iframeRef} id="youtube-player" className="w-full"></div>
   );
 }
