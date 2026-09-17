@@ -152,3 +152,14 @@ export const createFeedbackResponse = async (
 
   return response as FeedbackResponse;
 };
+
+export const getFeedbackResponsesByFormId = async (
+  formId: string,
+): Promise<FeedbackResponse[] | null> => {
+  const responses = await prisma.feedbackResponse.findMany({
+    where: { formId },
+    include: { answers: { include: { question: true, response: true } } },
+  });
+
+  return responses as FeedbackResponse[] | null;
+};

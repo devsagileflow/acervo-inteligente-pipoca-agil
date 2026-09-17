@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { UseFilterFormResult } from "./useFilterForm";
-import { EMPTY_VALUE, Granularity } from "./types";
+import { EMPTY_VALUE } from "./types";
 
 const formatDateInput = (dateString?: string) => {
   if (!dateString) return "";
@@ -39,10 +39,6 @@ export const FilterForm = ({
     isPending,
     startTransition,
     filters,
-    eventNameOptions,
-    pagePathOptions,
-    targetIdOptions,
-    userIdOptions,
     minDateCalendar,
     setMinDateCalendar,
     maxDateCalendar,
@@ -52,10 +48,10 @@ export const FilterForm = ({
 
   return (
     <form
-      className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+      className="grid grid-cols-1 gap-4 place-self-center sm:grid-cols-2"
       onSubmit={(e) => e.preventDefault()}
     >
-      <div className="space-y-2">
+      {/* <div className="space-y-2">
         <Label htmlFor="eventName">Evento</Label>
         <Select
           value={filters.eventName ?? ""}
@@ -161,7 +157,7 @@ export const FilterForm = ({
             </SelectGroup>
           </SelectContent>
         </Select>
-      </div>
+      </div> */}
 
       <div className="space-y-2">
         <Label htmlFor="minDate">Data inicial</Label>
@@ -227,30 +223,7 @@ export const FilterForm = ({
         </Popover>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="granularity">Granularidade</Label>
-        <Select
-          value={filters.granularity ?? "day"}
-          onValueChange={(value) =>
-            startTransition(() => form.setValue("granularity", value as Granularity))
-          }
-          disabled={isPending}
-        >
-          <SelectTrigger id="granularity">
-            <SelectValue placeholder="Diário" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Granularidade</SelectLabel>
-              <SelectItem value="day">Diário</SelectItem>
-              <SelectItem value="week">Semanal</SelectItem>
-              <SelectItem value="month">Mensal</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="flex items-end sm:col-span-2 lg:col-span-3">
+      <div className="flex items-end justify-center sm:col-span-2">
         <Button
           type="button"
           variant="outline"

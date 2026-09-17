@@ -79,37 +79,58 @@ export async function trackButtonClick(pagePath: string, buttonId: string, targe
   });
 }
 
-export async function trackVideoCompleted(pagePath: string, videoId: string) {
+export async function trackVideoCompleted(
+  pagePath: string,
+  videoId: string,
+  videoTitle: string,
+  anonymousId: string,
+) {
   await trackEvent({
     eventName: "video_complete",
     pagePath,
+    anonymousId,
     referrer: typeof document !== "undefined" ? document.referrer || undefined : undefined,
     properties: {
       videoId,
+      videoTitle,
       pathname: pagePath,
     },
   });
 }
 
-export async function trackVideoStarted(pagePath: string, videoId: string) {
+export async function trackVideoStarted(
+  pagePath: string,
+  videoId: string,
+  videoTitle: string,
+  anonymousId: string,
+) {
   await trackEvent({
     eventName: "video_play",
     pagePath,
+    anonymousId,
     referrer: typeof document !== "undefined" ? document.referrer || undefined : undefined,
     properties: {
       videoId,
+      videoTitle,
       pathname: pagePath,
     },
   });
 }
 
-export async function trackVideoPaused(pagePath: string, videoId: string) {
+export async function trackVideoPaused(
+  pagePath: string,
+  videoId: string,
+  videoTitle: string,
+  anonymousId: string,
+) {
   await trackEvent({
     eventName: "video_paused",
     pagePath,
+    anonymousId,
     referrer: typeof document !== "undefined" ? document.referrer || undefined : undefined,
     properties: {
       videoId,
+      videoTitle,
       pathname: pagePath,
     },
   });

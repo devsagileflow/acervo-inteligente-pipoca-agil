@@ -1,7 +1,10 @@
 import { FastifyInstance } from "fastify";
 import { NotFound } from "http-errors";
 
-import { createFeedbackResponse } from "./feedback-response.service";
+import {
+  createFeedbackResponse,
+  getFeedbackResponsesByFormId,
+} from "./feedback-response.service";
 import {
   CreateFeedbackResponseBody,
   createFeedbackResponseBodySchema,
@@ -41,6 +44,27 @@ export default async function feedbackResponseRoute(app: FastifyInstance) {
       if (!response) throw new NotFound("FEEDBACK_FORM_NOT_FOUND");
 
       return reply.code(201).send({ success: true, data: response, code: 201 });
+    },
+  );
+
+  app.get<{ Params: FeedbackFormParams; Reply: Result<FeedbackResponse[]> }>(
+    "/feedback-forms/:formId/responses",
+    {
+      schema: {
+        description:
+          "Obtém um conjunto de respostas para um formulário de feedback publicado.",
+        tags: ["Feedback"],
+        params: feedbackFormParamsSchema,
+        response: {
+          200: resultSchema(feedbackResponseSchema.array()),
+        },
+      },
+    },
+    async (req, reply) => {
+      const responses = await getFeedbackResponsesByFormId(req.params.formId);
+      if (!responses) throw new NotFound("FEEDBACK_FORM_NOT_FOUND");
+
+      return reply.send({ success: true, data: responses, code: 200 });
     },
   );
 }

@@ -10,6 +10,7 @@ import { extractYoutubeId, formatMinutes, getThumbnailUrl } from "./utils";
 import Link from "next/link";
 import { TrilhasHeader } from "../../components/trilhas-header";
 import { CTAFooter } from "@/app/(marketing)/cta-footer";
+import { VideoFrame } from "./video-frame";
 
 type TrilhaDetailProps = {
   trail: Trail;
@@ -21,6 +22,7 @@ const subscribeToStorage = (callback: () => void) => {
 };
 
 export function TrilhaDetail({ trail }: TrilhaDetailProps) {
+  const anonymousId = useMemo<string>(() => crypto.randomUUID(), []);
   const items = useMemo(
     () =>
       (trail.items ?? [])
@@ -69,7 +71,7 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
         <div className="flex w-full max-w-7xl flex-col gap-5">
           <Link
             href="/trilhas"
-            className="flex w-fit items-center gap-2 text-[#F1F5F9] font-normal leading-none tracking-normal text-lg mb-4 lg:mb-0"
+            className="mb-4 flex w-fit items-center gap-2 text-lg leading-none font-normal tracking-normal text-[#F1F5F9] lg:mb-0"
             onClick={() => trackButtonClick(`/trilhas/${trail.id}`, "trilha-voltar")}
           >
             <ArrowLeft className="size-4" />
@@ -96,13 +98,7 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
                     <h2 className="text-center text-[17px] font-bold text-[#FBBF24] sm:text-2xl">
                       {selectedItem.content.title}
                     </h2>
-                    <iframe
-                      className="aspect-video w-full rounded-2xl"
-                      src={`https://www.youtube.com/embed/${extractYoutubeId(selectedItem.content.youtubeUrl)}`}
-                      title={selectedItem.content.title}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
+                    <VideoFrame item={selectedItem} anonymousId={anonymousId} />
                   </>
                 ) : (
                   <div className="flex aspect-video w-full items-center justify-center rounded-2xl bg-[#1E293B] text-white">
@@ -133,7 +129,7 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
               <h2 className="text-start text-2xl font-bold text-[#F1F5F9] sm:text-3xl">
                 Outros vídeos da trilha:
               </h2>
-              <ol className="scrollbar-thin scrollbar-thumb-[#6C3DBF] scrollbar-track-[#1E293B] flex min-h-0 min-w-0 flex-1 flex-col gap-7.5 overflow-y-auto pr-2 lg:pr-4">
+              <ol className="flex min-h-0 min-w-0 flex-1 scrollbar-thin scrollbar-thumb-[#6C3DBF] scrollbar-track-[#1E293B] flex-col gap-7.5 overflow-y-auto pr-2 lg:pr-4">
                 {items
                   .filter((item) => item.id !== selectedItem?.id)
                   .sort((a, b) => a.position - b.position)
@@ -145,12 +141,19 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
                     const isLocked = !feedbackDone && index > 1;
 
                     return (
-                      <div key={`trilha-item-wrapper-${item.id}`} className="flex min-w-0 flex-col gap-6">
+                      <div
+                        key={`trilha-item-wrapper-${item.id}`}
+                        className="flex min-w-0 flex-col gap-6"
+                      >
                         <li
                           className="relative flex min-w-0 cursor-pointer items-center rounded-2xl bg-linear-to-r from-[#6C3DBF] to-[#FCD34D] p-1"
                           onClick={isLocked ? undefined : () => handleItemClick(item)}
                           aria-disabled={isLocked}
-                          title={isLocked ? "Responda o formulário para desbloquear este vídeo" : undefined}
+                          title={
+                            isLocked
+                              ? "Responda o formulário para desbloquear este vídeo"
+                              : undefined
+                          }
                         >
                           <div className="flex min-w-0 flex-1 flex-col gap-1 rounded-2xl bg-[#0F172A] p-4 sm:p-6">
                             <div className="flex min-w-0 items-center justify-between gap-4">
