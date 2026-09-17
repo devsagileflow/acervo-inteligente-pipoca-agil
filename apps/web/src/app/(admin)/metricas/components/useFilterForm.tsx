@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Resolver, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { parseISO, startOfDay, endOfDay } from "date-fns";
-import { EMPTY_VALUE, granularitySchema, type MetricasDetailsProps } from "./types";
+import { EMPTY_VALUE, type MetricasDetailsProps } from "./types";
 
 const eventMetricsSchema = z.object({
   minDate: z.string().optional(),
@@ -14,7 +14,6 @@ const eventMetricsSchema = z.object({
   pagePath: z.string().optional(),
   targetId: z.string().optional(),
   userId: z.string().optional(),
-  granularity: granularitySchema.optional().default("day"),
 });
 
 type EventMetricsFilter = z.infer<typeof eventMetricsSchema>;
@@ -52,7 +51,6 @@ export const useFilterForm = ({ events }: MetricasDetailsProps) => {
       pagePath: undefined,
       targetId: undefined,
       userId: undefined,
-      granularity: "day",
     },
   });
 

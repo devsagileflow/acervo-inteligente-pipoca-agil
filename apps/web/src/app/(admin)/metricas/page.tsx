@@ -5,8 +5,8 @@ const fetchData = async (): Promise<Result<AnalyticsEvent[]>> => {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL;
     const response = await fetch(`${baseUrl}/api/analytics`, {
-      cache: "force-cache",
-      next: { revalidate: 1 * 60 * 60 }, // 1 hour
+      // cache: "force-cache",
+      // next: { revalidate: 1 * 60 * 60 }, // 1 hour
     });
     if (!response.ok) throw new Error("Failed to fetch analytics");
     const data = await response.json();
