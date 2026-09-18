@@ -1,6 +1,6 @@
 "use client";
 
-import { ButtonClickChart, ChartSkeleton, PageViewChart } from "./charts";
+import { ButtonClickChart, ChartSkeleton, PageViewChart, VideoChart } from "./charts";
 
 import { useFilterForm } from "./useFilterForm";
 import { FilterForm } from "./filterForm";
@@ -35,6 +35,10 @@ export const MetricasDetails = ({ events }: MetricasDetailsProps) => {
       {/* Button Click Metrics */}
       <p>Quantidade de cliques em botões</p>
       {isPending ? <ChartSkeleton /> : <ButtonClickChart events={filteredEvents} />}
+
+      {/* Video Metrics */}
+      <p>Quantidade de interações com vídeos</p>
+      {isPending ? <ChartSkeleton /> : <VideoChart events={filteredEvents} />}
 
       {/* Events Summary */}
       <div className="space-y-2">

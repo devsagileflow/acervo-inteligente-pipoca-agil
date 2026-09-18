@@ -18,34 +18,57 @@ export function VideoFrame({ item }: { item: TrailItem }) {
   const iframeRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<any>(null);
   const anonymousId = useRef<string>(crypto.randomUUID()).current;
+  const videoTitle = item.content?.title ?? "";
 
   const onPlayerStateChange = useCallback(
     (event: any) => {
-      if (event.data === window.YT.PlayerState.ENDED) trackVideoCompleted(item?.id, anonymousId);
+      if (event.data === window.YT.PlayerState.ENDED)
+        trackVideoCompleted(item.id, anonymousId, videoTitle);
       else if (event.data === window.YT.PlayerState.PLAYING)
-        trackVideoStarted(item?.id, anonymousId);
-      else if (event.data === window.YT.PlayerState.PAUSED) trackVideoPaused(item?.id, anonymousId);
+        trackVideoStarted(item.id, anonymousId, videoTitle);
+      else if (event.data === window.YT.PlayerState.PAUSED)
+        trackVideoPaused(item.id, anonymousId, videoTitle);
     },
-    [anonymousId, item?.id],
+    [anonymousId, item.id, videoTitle],
   );
 
   useEffect(() => {
-    // Carregar o script da YouTube IFrame API
-    const tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
-    document.body.appendChild(tag);
+    if (!item.content?.youtubeUrl || !iframeRef.current) return;
 
-    window.onYouTubeIframeAPIReady = () => {
-      if (item?.content?.youtubeUrl && iframeRef.current) {
-        playerRef.current = new window.YT.Player(iframeRef.current, {
-          height: "390",
-          width: "640",
-          videoId: extractYoutubeId(item.content.youtubeUrl),
-          events: {
-            onStateChange: onPlayerStateChange,
-          },
-        });
+    const createPlayer = () => {
+      if (!iframeRef.current) return;
+      playerRef.current?.destroy?.();
+      playerRef.current = new window.YT.Player(iframeRef.current, {
+        height: "390",
+        width: "640",
+        videoId: extractYoutubeId(item.content?.youtubeUrl ?? ""),
+        events: {
+          onStateChange: onPlayerStateChange,
+        },
+      });
+    };
+
+    if (window.YT?.Player) {
+      createPlayer();
+    } else {
+      const existingScript = document.querySelector(
+        'script[src="https://www.youtube.com/iframe_api"]',
+      );
+      if (!existingScript) {
+        const tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/iframe_api";
+        document.body.appendChild(tag);
       }
+
+      const previousReady = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => {
+        previousReady?.();
+        createPlayer();
+      };
+    }
+
+    return () => {
+      playerRef.current?.destroy?.();
     };
   }, [item, onPlayerStateChange]);
 
