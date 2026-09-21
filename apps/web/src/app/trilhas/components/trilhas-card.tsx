@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { CTAFooter } from "@/app/(marketing)/cta-footer";
 import { TrilhasHeader } from "./trilhas-header";
 import type { Trail } from "@/packages/schemas/trail.api.schema";
@@ -43,6 +45,9 @@ const TrilhaTags = ({ tags }: { tags: string[] }) => {
 const TrilhaCard = ({ trilha }: { trilha: Trail }) => {
   const { videosCount, durationLabel } = getTrailStats(trilha);
 
+  const specs = trilha.specs ?? [];
+  const specRows = specs.length >= 4 ? specs.slice(2) : specs;
+
   return (
     <div className="w-full max-w-[1400px] rounded-3xl border border-amber-400/60 bg-[#0c1225] p-10">
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
@@ -59,7 +64,7 @@ const TrilhaCard = ({ trilha }: { trilha: Trail }) => {
           <CTAButton trilha={trilha} />
         </div>
 
-        <div className="flex flex-col gap-4">
+        <div className="cursor-pointer flex w-full flex-col gap-3 overflow-hidden rounded-[20px] bg-[#060A12]/40 pb-5 shadow-[0_10px_30px_rgba(0,0,0,0.25)] md:max-w-[520px] md:justify-self-end">
           {trilha.imageUrl && (
             <Image
               unoptimized
@@ -67,29 +72,51 @@ const TrilhaCard = ({ trilha }: { trilha: Trail }) => {
               alt={trilha.title}
               width={800}
               height={415}
-              className="h-auto w-full rounded-xl object-cover"
+              className="-m-3 h-auto w-[calc(100%+1.5rem)] max-w-none object-cover"
             />
           )}
 
-          <div className="flex flex-col gap-2 text-sm text-white/80">
+          <div className="flex flex-col gap-3 px-6 text-sm text-white">
             {videosCount > 0 && (
-              <div className="flex items-center gap-2">
-                <Image src="/img/video-lg.png" alt="Ícone de vídeo" width={16} height={16} />
+              <div className="flex items-center gap-3">
+                <Image
+                  src="/img/video-lg.png"
+                  alt="Ícone de vídeo"
+                  width={24}
+                  height={24}
+                  className="shrink-0"
+                />
                 <span>{videosCount} vídeos</span>
               </div>
             )}
             {durationLabel && (
-              <div className="flex items-center gap-2">
-                <Image src="/img/duracao.png" alt="Ícone de vídeo" width={16} height={16} />
+              <div className="flex items-center gap-3">
+                <Image
+                  src="/img/duracao.png"
+                  alt="Ícone de vídeo"
+                  width={24}
+                  height={24}
+                  className="shrink-0"
+                />
                 <span>{durationLabel}</span>
               </div>
             )}
-            {trilha.specs && trilha.specs.length > 0 && (
-              <div className="flex items-center gap-2">
-                <Image src="/img/duracao2.png" alt="Ícone de vídeo" width={16} height={16} />
-                <span>{trilha.specs.join(", ")}</span>
+            {specRows.map((spec, index) => (
+              <div key={`${index}-${spec}`} className="flex items-center gap-3">
+                <Image
+                  src={
+                    spec.toLowerCase().startsWith("ritmo")
+                      ? "/img/livro.png"
+                      : "/img/duracao2.png"
+                  }
+                  alt="Ícone de vídeo"
+                  width={24}
+                  height={24}
+                  className="shrink-0"
+                />
+                <span>{spec}</span>
               </div>
-            )}
+            ))}
           </div>
         </div>
       </div>
@@ -102,10 +129,20 @@ export const TrilhasContent = ({ trilhas }: { trilhas: Trail[] }) => {
     <div className="relative flex min-h-screen w-full flex-col bg-[#0F172A]">
       <TrilhasHeader />
 
-      <div className="flex flex-1 flex-col items-center gap-16 px-6 pt-16 pb-24">
-        <h1 className="text-center text-[30px] font-extrabold text-white md:text-[45px]">
-          ESCOLHA A <span className="text-amber-400">SUA TRILHA</span>
-        </h1>
+      <div className="flex flex-1 flex-col items-center gap-8 px-6 pt-8 pb-24 md:gap-16 md:pt-16">
+        <div className="flex w-full max-w-[1400px] flex-col gap-8 md:gap-5">
+          <Link
+            href="/"
+            className="flex w-fit items-center gap-2 text-lg leading-none font-normal tracking-normal text-[#F1F5F9]"
+          >
+            <ArrowLeft className="size-4" />
+            Voltar
+          </Link>
+
+          <h1 className="text-center text-[30px] font-extrabold text-white md:text-[45px]">
+            ESCOLHA A <span className="text-amber-400">SUA TRILHA</span>
+          </h1>
+        </div>
 
         <div className="flex flex-col items-center gap-10">
           {trilhas.map((trilha) => (

@@ -19,8 +19,8 @@ const Passo = ({ numero, titulo, descricao, icone }: PassoProps) => {
         priority
       />
 
-      <div className="absolute inset-0 flex items-center gap-4 px-6">
-        <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center">
+      <div className="absolute inset-0 flex items-center gap-2 px-4 py-3 sm:gap-4 sm:px-6 sm:py-0">
+        <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center sm:h-11 sm:w-11">
           <Image
             src={icone}
             alt=""
@@ -30,14 +30,14 @@ const Passo = ({ numero, titulo, descricao, icone }: PassoProps) => {
           />
         </div>
 
-        <div className="flex flex-col">
-          <span className="text-[15px] font-bold text-[#FBBF24] leading-tight">
+        <div className="flex flex-col min-w-0 py-2 sm:py-0">
+          <span className="text-xs sm:text-[15px] font-bold text-[#FBBF24] leading-tight">
             {numero}
           </span>
-          <span className="text-[17px] font-semibold text-white leading-tight">
+          <span className="text-sm sm:text-[17px] font-semibold text-white leading-tight">
             {titulo}
           </span>
-          <span className="text-[13px] font-normal text-gray-400 leading-tight">
+          <span className="text-[11px] sm:text-[13px] font-normal text-gray-400 leading-tight">
             {descricao}
           </span>
         </div>
