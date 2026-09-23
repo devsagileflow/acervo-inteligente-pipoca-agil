@@ -5,12 +5,14 @@ import Image from "next/image";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
 import type { Trail, TrailItem } from "@/packages/schemas/trail.api.schema";
+import type { FeedbackForm } from "@acervo/schemas";
 import { trackButtonClick } from "@/lib/analytics";
 import { extractYoutubeId, formatMinutes, getThumbnailUrl } from "./utils";
 import Link from "next/link";
 import { TrilhasHeader } from "../../components/trilhas-header";
 import { CTAFooter } from "@/app/(marketing)/cta-footer";
 import { VideoFrame } from "./video-frame";
+import { RenderAPIForm } from "../../[trailId]/feedback/components/renderAPIForm";
 
 type TrilhaDetailProps = {
   trail: Trail;
@@ -47,6 +49,35 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
     },
     () => false,
   );
+
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+  const [feedbackForm, setFeedbackForm] = useState<FeedbackForm | null>(null);
+  const [feedbackError, setFeedbackError] = useState(false);
+
+  useEffect(() => {
+    if (!isFeedbackOpen || feedbackForm || feedbackError) return;
+
+    const loadFeedbackForm = async () => {
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+        const response = await fetch(`${baseUrl}/api/feedback-forms/feedback-form-global-trail`);
+        if (!response.ok) throw new Error("Failed to fetch form");
+        const data = await response.json();
+        if (!data.success || !data.data) throw new Error(data.message);
+        setFeedbackForm(data.data);
+      } catch (error) {
+        console.error("Error fetching feedback form:", error);
+        setFeedbackError(true);
+      }
+    };
+
+    loadFeedbackForm();
+  }, [isFeedbackOpen, feedbackForm, feedbackError]);
+
+  const handleFeedbackClose = () => {
+    setIsFeedbackOpen(false);
+    localStorage.setItem(`trilha-feedback-done-${trail.id}`, "true");
+  };
 
   const leftColumnRef = useRef<HTMLDivElement>(null);
   const [leftColumnHeight, setLeftColumnHeight] = useState<number | null>(null);
@@ -184,8 +215,9 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
                           )}
                         </li>
                         {index === 1 && (
-                          <Link
-                            href={`/trilhas/${trail.id}/feedback`}
+                          <button
+                            type="button"
+                            onClick={() => setIsFeedbackOpen(true)}
                             className="flex min-w-0 cursor-pointer items-center rounded-2xl bg-linear-to-r from-[#6C3DBF] to-[#FCD34D] p-1"
                           >
                             <div className="flex flex-1 flex-col items-center gap-4 rounded-2xl bg-[#0F172A] p-4 text-center sm:p-6">
@@ -193,11 +225,11 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
                                 Para liberar os próximos vídeos{" "}
                                 <strong>avalie sua experiência até aqui</strong>. É rapidinho.
                               </p>
-                              <button className="h-10 w-full max-w-64 cursor-pointer rounded-4xl bg-linear-to-r from-[#0F172A] to-[#6C3DBF]">
+                              <span className="flex h-10 w-full max-w-64 cursor-pointer items-center justify-center rounded-4xl bg-linear-to-r from-[#0F172A] to-[#6C3DBF]">
                                 <span className="font-bold text-[#FBBF24]">RESPONDER</span>
-                              </button>
+                              </span>
                             </div>
-                          </Link>
+                          </button>
                         )}
                       </div>
                     );
@@ -208,6 +240,32 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
         </div>
       </main>
       <CTAFooter />
+
+      {isFeedbackOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#0F172A]/70 p-4 backdrop-blur-sm"
+          onClick={handleFeedbackClose}
+        >
+          <div onClick={(event) => event.stopPropagation()}>
+            {feedbackForm ? (
+              <RenderAPIForm
+                feedback_form={feedbackForm}
+                contentType="TRAIL"
+                contentId={trail.id}
+                onClose={handleFeedbackClose}
+              />
+            ) : feedbackError ? (
+              <div className="rounded-3xl border border-amber-400/60 bg-[#0c1225] p-10 text-center text-white">
+                Não foi possível carregar o formulário.
+              </div>
+            ) : (
+              <div className="rounded-3xl border border-amber-400/60 bg-[#0c1225] p-10 text-center text-white">
+                Carregando...
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </>
   );
 }
