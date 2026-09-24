@@ -39,7 +39,12 @@ export default async function PageForm({ params }: Props) {
 
   return (
     <div className="flex justify-center bg-[#0F172A] px-14">
-      <RenderAPIForm feedback_form={fetchedData.data} contentType="TRAIL" contentId={trailId} />
+      <RenderAPIForm
+        feedback_form={fetchedData.data}
+        contentType="TRAIL"
+        contentId={trailId}
+        onClose={() => {}}
+      />
     </div>
   );
 }

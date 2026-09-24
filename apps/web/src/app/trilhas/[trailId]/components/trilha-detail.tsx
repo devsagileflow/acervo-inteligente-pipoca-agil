@@ -74,6 +74,12 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
     loadFeedbackForm();
   }, [isFeedbackOpen, feedbackForm, feedbackError]);
 
+  const handleFeedbackOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const buttonId = e.currentTarget.id;
+    trackButtonClick(`/trilhas/${trail.id}`, buttonId);
+    setIsFeedbackOpen(true);
+  };
+
   const handleFeedbackClose = () => {
     setIsFeedbackOpen(false);
     localStorage.setItem(`trilha-feedback-done-${trail.id}`, "true");
@@ -216,8 +222,9 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
                         </li>
                         {index === 1 && (
                           <button
+                            id={`feedback-button-${item.trailId}`}
                             type="button"
-                            onClick={() => setIsFeedbackOpen(true)}
+                            onClick={handleFeedbackOpen}
                             className="flex min-w-0 cursor-pointer items-center rounded-2xl bg-linear-to-r from-[#6C3DBF] to-[#FCD34D] p-1"
                           >
                             <div className="flex flex-1 flex-col items-center gap-4 rounded-2xl bg-[#0F172A] p-4 text-center sm:p-6">
