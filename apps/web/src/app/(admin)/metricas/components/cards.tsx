@@ -55,12 +55,7 @@ export const FeedbackFormCard = ({ feedbackForm, feedbackResponses }: Props) => 
         <SimpleCard title="Avaliações baixas (<=3)" content={minResponseScore} />
         <SimpleCard title="Avaliações altas (>=4)" content={maxResponseScore} />
       </div>
-      <Accordion
-        className="lg:w-1/2"
-        aria-label="FAQ items"
-        multiple
-        value={faq.map((_, index) => `item-${index}`)}
-      >
+      <Accordion className="lg:w-1/2" aria-label="FAQ items" multiple>
         {faq.map(({ questionLabel, answers }, index) => (
           <AccordionItem key={index} value={`item-${index}`}>
             <AccordionTrigger className="text-left">{questionLabel}</AccordionTrigger>

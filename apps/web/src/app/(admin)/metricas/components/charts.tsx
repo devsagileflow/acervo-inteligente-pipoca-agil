@@ -231,9 +231,21 @@ export const VideoChart = ({ events, videos }: VideoChartProps) => {
           margin={{ top: 5, right: 30, left: 200, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis type="number" xAxisId="videoId" dataKey="videoDurationInSeconds" />
-          <YAxis dataKey="videoTitle" type="category" width={190} />
-          <Tooltip />
+          <XAxis type="number" xAxisId="videoId" />
+          {/* dataKey precisa ser único (videoId) para o Tooltip casar com a linha correta; vídeos com títulos repetidos faziam o Tooltip mostrar os dados do primeiro vídeo com o mesmo título */}
+          <YAxis
+            dataKey="videoId"
+            type="category"
+            width={190}
+            tickFormatter={(videoId) =>
+              data.find((item) => item.videoId === videoId)?.videoTitle ?? videoId
+            }
+          />
+          <Tooltip
+            labelFormatter={(videoId) =>
+              data.find((item) => item.videoId === videoId)?.videoTitle ?? videoId
+            }
+          />
           <Legend />
           <Bar
             xAxisId="videoId"
