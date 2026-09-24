@@ -9,6 +9,8 @@ export * from "./trail.api.schema";
 export * from "./user.api.schema";
 export * from "./user.schema";
 export * from "./video.api.schema";
+export * from "./waitlist.api.schema";
+export * from "./waitlist.schema";
 
 import z from "zod";
 import { $ZodErrorTree } from "zod/v4/core";

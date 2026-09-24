@@ -7,6 +7,7 @@ import feedbackResponseRoute from "@/features/feedback/feedback-response.route";
 import healthRoute from "@/features/health/health.route";
 import trailRoute from "@/features/trail/trail.route";
 import videoRoute from "@/features/video/video.route";
+import waitlistRoute from "@/features/waitlist/waitlist.route";
 import userRoute from "./user/user.route";
 
 function apiRoutes(app: FastifyInstance) {
@@ -17,6 +18,7 @@ function apiRoutes(app: FastifyInstance) {
   app.register(userRoute);
   app.register(feedbackFormRoute);
   app.register(feedbackResponseRoute);
+  app.register(waitlistRoute);
 }
 
 export default function routes(app: FastifyInstance) {

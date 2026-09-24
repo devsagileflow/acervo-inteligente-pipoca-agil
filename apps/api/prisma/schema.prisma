@@ -43,6 +43,13 @@ enum ContentType {
   TRAIL
 }
 
+enum WaitlistRole {
+  PO
+  SM
+  DEV
+  OTHER
+}
+
 enum QuestionType {
   STARS
   SCALE_0_10
@@ -305,4 +312,17 @@ model FeedbackAnswer {
   @@index([responseId])
   @@index([questionId])
   @@map("feedback_answer")
+}
+
+model Waitlist {
+  id        String        @id @default(ulid())
+  name      String
+  email     String
+  role      WaitlistRole?
+  message   String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@unique([email])
+  @@map("waitlist")
 }
