@@ -1,29 +1,12 @@
+import { apiGet } from "@/lib/api-client";
+import type { PaginatedTrails } from "@acervo/schemas";
 import { TrilhasContent } from "./components/trilhas-card";
-import type { PaginatedTrails, Result } from "@acervo/schemas";
-
-const fetchData = async (): Promise<Result<PaginatedTrails>> => {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-    const response = await fetch(`${baseUrl}/api/trails`, {
-      cache: process.env.NODE_ENV === "production" ? "force-cache" : "no-cache",
-      next: { revalidate: 24 * 60 * 60 }, // 24 hours
-    });
-    if (!response.ok) throw new Error("Failed to fetch trilhas");
-    const data = await response.json();
-    return data as Result<PaginatedTrails>;
-  } catch (error) {
-    console.error("Error fetching trilhas:", error);
-    return {
-      success: false,
-      message: "Failed to fetch trilhas",
-      code: 500,
-      error: { errors: [error instanceof Error ? error.message : "Unknown error"] },
-    };
-  }
-};
 
 export default async function PageTrilhas() {
-  const fetchedData = await fetchData();
+  const fetchedData = await apiGet<PaginatedTrails>("/api/trails", {
+    cache: process.env.NODE_ENV === "production" ? "force-cache" : "no-cache",
+    next: { revalidate: 24 * 60 * 60 }, // 24 hours
+  });
 
   if (!fetchedData.success)
     return (

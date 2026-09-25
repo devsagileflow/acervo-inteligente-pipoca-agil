@@ -5,7 +5,9 @@ import Image from "next/image";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
 import type { FeedbackForm, Trail, TrailItem } from "@acervo/schemas";
+import { apiGet } from "@/lib/api-client";
 import { trackButtonClick } from "@/lib/analytics";
+import { useApiRequest } from "@/lib/use-api-request";
 import { extractYoutubeId, formatMinutes, getThumbnailUrl } from "./utils";
 import Link from "next/link";
 import { TrilhasHeader } from "../../components/trilhas-header";
@@ -50,28 +52,15 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
   );
 
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
-  const [feedbackForm, setFeedbackForm] = useState<FeedbackForm | null>(null);
-  const [feedbackError, setFeedbackError] = useState(false);
-
-  useEffect(() => {
-    if (!isFeedbackOpen || feedbackForm || feedbackError) return;
-
-    const loadFeedbackForm = async () => {
-      try {
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-        const response = await fetch(`${baseUrl}/api/feedback-forms/feedback-form-global-trail`);
-        if (!response.ok) throw new Error("Failed to fetch form");
-        const data = await response.json();
-        if (!data.success || !data.data) throw new Error(data.message);
-        setFeedbackForm(data.data);
-      } catch (error) {
-        console.error("Error fetching feedback form:", error);
-        setFeedbackError(true);
-      }
-    };
-
-    loadFeedbackForm();
-  }, [isFeedbackOpen, feedbackForm, feedbackError]);
+  const {
+    data: feedbackForm,
+    error: feedbackError,
+    loading: feedbackLoading,
+  } = useApiRequest<FeedbackForm>(
+    () => apiGet<FeedbackForm>("/api/feedback-forms/feedback-form-global-trail"),
+    [isFeedbackOpen],
+    isFeedbackOpen,
+  );
 
   const handleFeedbackOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
     const buttonId = e.currentTarget.id;
@@ -264,11 +253,11 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
               <div className="rounded-3xl border border-amber-400/60 bg-[#0c1225] p-10 text-center text-white">
                 Não foi possível carregar o formulário.
               </div>
-            ) : (
+            ) : feedbackLoading ? (
               <div className="rounded-3xl border border-amber-400/60 bg-[#0c1225] p-10 text-center text-white">
                 Carregando...
               </div>
-            )}
+            ) : null}
           </div>
         </div>
       )}
