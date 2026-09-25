@@ -17,10 +17,9 @@ declare global {
 
 type Props = {
   item: TrailItem;
-  anonymousId: string;
 };
 
-export function VideoFrame({ item, anonymousId }: Props) {
+export function VideoFrame({ item }: Props) {
   const pathname = usePathname();
   const iframeRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<any>(null);
@@ -31,13 +30,13 @@ export function VideoFrame({ item, anonymousId }: Props) {
     (event: any) => {
       console.log("Player state changed:", event.data);
       if (event.data === window.YT.PlayerState.ENDED)
-        trackVideoCompleted(pathname, videoId, videoTitle, anonymousId);
+        trackVideoCompleted(pathname, videoId, videoTitle);
       else if (event.data === window.YT.PlayerState.PLAYING)
-        trackVideoStarted(pathname, videoId, videoTitle, anonymousId);
+        trackVideoStarted(pathname, videoId, videoTitle);
       else if (event.data === window.YT.PlayerState.PAUSED)
-        trackVideoPaused(pathname, videoId, videoTitle, anonymousId);
+        trackVideoPaused(pathname, videoId, videoTitle);
     },
-    [pathname, videoId, videoTitle, anonymousId],
+    [pathname, videoId, videoTitle],
   );
 
   useEffect(() => {

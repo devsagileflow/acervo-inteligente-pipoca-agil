@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "reac
 
 import type { FeedbackForm, Trail, TrailItem } from "@acervo/schemas";
 import { apiGet } from "@/lib/api-client";
-import { getAnonymousId, trackButtonClick } from "@/lib/analytics";
+import { trackButtonClick } from "@/lib/analytics";
 import { useApiRequest } from "@/lib/use-api-request";
 import { extractYoutubeId, formatMinutes, getThumbnailUrl } from "./utils";
 import Link from "next/link";
@@ -25,7 +25,6 @@ const subscribeToStorage = (callback: () => void) => {
 };
 
 export function TrilhaDetail({ trail }: TrilhaDetailProps) {
-  const anonymousId = useMemo<string>(() => getAnonymousId() ?? crypto.randomUUID(), []);
   const items = useMemo(
     () =>
       (trail.items ?? [])
@@ -123,7 +122,7 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
                     <h2 className="text-center text-[17px] font-bold text-[#FBBF24] sm:text-2xl">
                       {selectedItem.content.title}
                     </h2>
-                    <VideoFrame item={selectedItem} anonymousId={anonymousId} />
+                    <VideoFrame item={selectedItem} />
                   </>
                 ) : (
                   <div className="flex aspect-video w-full items-center justify-center rounded-2xl bg-[#1E293B] text-white">
