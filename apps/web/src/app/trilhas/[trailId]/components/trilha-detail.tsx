@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "reac
 
 import type { FeedbackForm, Trail, TrailItem } from "@acervo/schemas";
 import { apiGet } from "@/lib/api-client";
-import { trackButtonClick } from "@/lib/analytics";
+import { getAnonymousId, trackButtonClick } from "@/lib/analytics";
 import { useApiRequest } from "@/lib/use-api-request";
 import { extractYoutubeId, formatMinutes, getThumbnailUrl } from "./utils";
 import Link from "next/link";
@@ -25,7 +25,7 @@ const subscribeToStorage = (callback: () => void) => {
 };
 
 export function TrilhaDetail({ trail }: TrilhaDetailProps) {
-  const anonymousId = useMemo<string>(() => crypto.randomUUID(), []);
+  const anonymousId = useMemo<string>(() => getAnonymousId() ?? crypto.randomUUID(), []);
   const items = useMemo(
     () =>
       (trail.items ?? [])

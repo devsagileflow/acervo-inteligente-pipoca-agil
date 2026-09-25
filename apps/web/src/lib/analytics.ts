@@ -13,15 +13,22 @@ type AnalyticsEventPayload = {
 
 const anonymousIdKey = "pipoca-agil:anonymous-id";
 
+let inMemoryAnonymousId: string | undefined;
+
 export function getAnonymousId() {
   if (typeof window === "undefined") return undefined;
 
-  const storedAnonymousId = window.localStorage.getItem(anonymousIdKey);
-  if (storedAnonymousId) return storedAnonymousId;
+  try {
+    const storedAnonymousId = window.localStorage.getItem(anonymousIdKey);
+    if (storedAnonymousId) return storedAnonymousId;
 
-  const newAnonymousId = window.crypto.randomUUID();
-  window.localStorage.setItem(anonymousIdKey, newAnonymousId);
-  return newAnonymousId;
+    const newAnonymousId = window.crypto.randomUUID();
+    window.localStorage.setItem(anonymousIdKey, newAnonymousId);
+    return newAnonymousId;
+  } catch {
+    inMemoryAnonymousId ??= window.crypto.randomUUID();
+    return inMemoryAnonymousId;
+  }
 }
 
 function getAnalyticsUrl() {
