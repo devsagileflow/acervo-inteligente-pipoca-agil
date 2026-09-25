@@ -1,4 +1,4 @@
-import type { Trail } from "@/packages/schemas/trail.api.schema";
+import type { Trail } from "@acervo/schemas";
 
 const formatDuration = (totalSeconds: number): string => {
   const hours = Math.floor(totalSeconds / 3600);

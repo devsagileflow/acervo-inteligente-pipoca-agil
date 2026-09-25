@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { TrailItem } from "@/packages/schemas";
+import { TrailItem } from "@acervo/schemas";
 import { useCallback, useEffect, useRef } from "react";
 import { extractYoutubeId } from "./utils";
 import { trackVideoCompleted, trackVideoStarted, trackVideoPaused } from "@/lib/analytics";

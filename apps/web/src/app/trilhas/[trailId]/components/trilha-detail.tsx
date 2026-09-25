@@ -4,8 +4,7 @@ import { ArrowLeft, Clock } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
-import type { Trail, TrailItem } from "@/packages/schemas/trail.api.schema";
-import type { FeedbackForm } from "@acervo/schemas";
+import type { FeedbackForm, Trail, TrailItem } from "@acervo/schemas";
 import { trackButtonClick } from "@/lib/analytics";
 import { extractYoutubeId, formatMinutes, getThumbnailUrl } from "./utils";
 import Link from "next/link";

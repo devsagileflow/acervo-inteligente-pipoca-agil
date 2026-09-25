@@ -5,7 +5,7 @@ import {
   ListVideosQuery,
   PaginatedVideos,
   Result,
-} from "@/packages/schemas";
+} from "@acervo/schemas";
 import { MetricasDetails } from "./components/metricas-details";
 
 const fetchAnalyticsData = async (): Promise<Result<AnalyticsEvent[]>> => {

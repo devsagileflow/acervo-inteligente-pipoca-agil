@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { CTAFooter } from "@/app/(marketing)/cta-footer";
 import { TrilhasHeader } from "./trilhas-header";
-import type { Trail } from "@/packages/schemas/trail.api.schema";
+import type { Trail } from "@acervo/schemas";
 import { getTrailStats } from "./trilha-content";
 import { CTAButton } from "./cta-button";
 
@@ -64,7 +64,7 @@ const TrilhaCard = ({ trilha }: { trilha: Trail }) => {
           <CTAButton trilha={trilha} />
         </div>
 
-        <div className="cursor-pointer flex w-full flex-col gap-3 overflow-hidden rounded-[20px] bg-[#060A12]/40 pb-5 shadow-[0_10px_30px_rgba(0,0,0,0.25)] md:max-w-[520px] md:justify-self-end">
+        <div className="flex w-full cursor-pointer flex-col gap-3 overflow-hidden rounded-[20px] bg-[#060A12]/40 pb-5 shadow-[0_10px_30px_rgba(0,0,0,0.25)] md:max-w-[520px] md:justify-self-end">
           {trilha.imageUrl && (
             <Image
               unoptimized
@@ -105,9 +105,7 @@ const TrilhaCard = ({ trilha }: { trilha: Trail }) => {
               <div key={`${index}-${spec}`} className="flex items-center gap-3">
                 <Image
                   src={
-                    spec.toLowerCase().startsWith("ritmo")
-                      ? "/img/livro.png"
-                      : "/img/duracao2.png"
+                    spec.toLowerCase().startsWith("ritmo") ? "/img/livro.png" : "/img/duracao2.png"
                   }
                   alt="Ícone de vídeo"
                   width={24}

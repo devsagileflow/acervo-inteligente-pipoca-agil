@@ -6,7 +6,7 @@ import { FeedbackFormCard } from "./cards";
 import { useFilterForm } from "./useFilterForm";
 import { FilterForm } from "./filterForm";
 import { MetricasDetailsProps } from "./types";
-import type { Video, FeedbackForm, FeedbackResponse } from "@/packages/schemas";
+import type { Video, FeedbackForm, FeedbackResponse } from "@acervo/schemas";
 
 type Props = MetricasDetailsProps & {
   videos: Video[];

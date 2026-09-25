@@ -1,4 +1,4 @@
-import type { FeedbackForm, Result } from "@/packages/schemas/index";
+import type { FeedbackForm, Result } from "@acervo/schemas";
 import { RenderAPIForm } from "./components/renderAPIForm";
 
 const fetchData = async (): Promise<Result<FeedbackForm>> => {

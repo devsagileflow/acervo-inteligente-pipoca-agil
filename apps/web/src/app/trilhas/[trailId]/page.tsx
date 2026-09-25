@@ -1,4 +1,4 @@
-import { Result, Trail } from "@/packages/schemas";
+import { Result, Trail } from "@acervo/schemas";
 import { TrilhaDetail } from "./components/trilha-detail";
 
 const fetchData = async (trailId: string): Promise<Result<Trail>> => {

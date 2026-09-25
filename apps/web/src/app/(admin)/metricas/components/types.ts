@@ -1,4 +1,4 @@
-import { AnalyticsEvent } from "@/packages/schemas";
+import { AnalyticsEvent } from "@acervo/schemas";
 
 export type MetricasDetailsProps = {
   events: AnalyticsEvent[];

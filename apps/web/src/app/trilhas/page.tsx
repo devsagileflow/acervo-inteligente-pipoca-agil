@@ -1,5 +1,5 @@
 import { TrilhasContent } from "./components/trilhas-card";
-import type { PaginatedTrails, Result } from "@/packages/schemas/index";
+import type { PaginatedTrails, Result } from "@acervo/schemas";
 
 const fetchData = async (): Promise<Result<PaginatedTrails>> => {
   try {
