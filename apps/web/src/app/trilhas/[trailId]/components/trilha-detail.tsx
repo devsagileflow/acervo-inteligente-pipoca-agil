@@ -13,7 +13,7 @@ import Link from "next/link";
 import { TrilhasHeader } from "../../components/trilhas-header";
 import { CTAFooter } from "@/app/(marketing)/cta-footer";
 import { VideoFrame } from "./video-frame";
-import { RenderAPIForm } from "../../[trailId]/feedback/components/renderAPIForm";
+import { RenderAPIForm } from "../../[trailId]/_feedback/components/renderAPIForm";
 
 type TrilhaDetailProps = {
   trail: Trail;
