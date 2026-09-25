@@ -18,7 +18,9 @@ const SimpleCard = ({ title, content }: { title: string; content: React.ReactNod
 );
 
 export const FeedbackFormCard = ({ feedbackForm, feedbackResponses }: Props) => {
-  const feedbackResponsesCount = feedbackResponses?.length ?? 0;
+  const feedbackResponsesCount = feedbackResponses.filter((response) =>
+    response.answers?.some((answer) => answer.questionId === FEEDBACK_QUESTION_GLOBAL_TRAIL_ID),
+  ).length;
   const { sumResponseScore, minResponseScore, maxResponseScore } = feedbackResponses.reduce(
     (acc, response) => {
       const responseScore =
