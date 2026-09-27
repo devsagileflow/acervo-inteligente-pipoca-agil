@@ -35,7 +35,7 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
   const [selectedItem, setSelectedItem] = useState<TrailItem | null>(trail.items?.[0] ?? null);
   const handleItemClick = (item: TrailItem) => {
     setSelectedItem(item);
-    trackButtonClick(`/trilhas/${trail.id}`, `trilha-item-${item.id}`);
+    trackButtonClick(`/trilhas/${trail.id}`, item.id);
   };
 
   const feedbackDone = useSyncExternalStore(
@@ -209,7 +209,7 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
                         </li>
                         {index === 1 && (
                           <button
-                            id={`feedback-button-${item.trailId}`}
+                            id={`button-feedback-${item.trailId}`}
                             type="button"
                             onClick={handleFeedbackOpen}
                             className="flex min-w-0 cursor-pointer items-center rounded-2xl bg-linear-to-r from-[#6C3DBF] to-[#FCD34D] p-1"

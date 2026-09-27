@@ -8,20 +8,22 @@ import {
 } from "@acervo/schemas";
 import { MetricasDetails } from "./components/metricas-details";
 
-const fetchAnalyticsData = () => apiGet<AnalyticsEvent[]>("/api/analytics");
+const fetchAnalyticsData = () => apiGet<AnalyticsEvent[]>("/api/analytics", { cache: "no-store" });
 
 const fetchVideosData = () => {
   const params = { page: 1, pageSize: 100 } as ListVideosQuery;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const queryString = new URLSearchParams(params as any).toString();
-  return apiGet<PaginatedVideos>(`/api/videos?${queryString}`);
+  return apiGet<PaginatedVideos>(`/api/videos?${queryString}`, { cache: "no-store" });
 };
 
 const fetchFeedbackFormData = () =>
-  apiGet<FeedbackForm>("/api/feedback-forms/feedback-form-global-trail");
+  apiGet<FeedbackForm>("/api/feedback-forms/feedback-form-global-trail", { cache: "no-store" });
 
 const fetchFeedbackResponsesData = () =>
-  apiGet<FeedbackResponse[]>("/api/feedback-forms/feedback-form-global-trail/responses");
+  apiGet<FeedbackResponse[]>("/api/feedback-forms/feedback-form-global-trail/responses", {
+    cache: "no-store",
+  });
 
 export default async function MetricasPage() {
   const [analyticsData, videosData, feedbackFormData, feedbackResponsesData] = await Promise.all([

@@ -20,7 +20,7 @@ export const Reforco = () => {
               QUER APRENDER AGILIDADE SEM PERDER TEMPO BUSCANDO CONTEÚDOS SOLTOS?
             </p>
             <p className="py-5 text-[25px] md:text-[18px]">Comece por aqui!</p>
-            <CTAButton buttonId="button-cta-explore-trails-reforco" />
+            <CTAButton buttonId="button-cta-reforco-explorar-trilhas" />
           </div>
         </div>
       </article>

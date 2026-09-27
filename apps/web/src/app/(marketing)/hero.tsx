@@ -20,7 +20,7 @@ export const Hero = () => {
             Transformamos conteúdos do Pipoca Ágil em jornadas de aprendizado estruturadas.
           </p>
 
-          <CTAButton buttonId="button-cta-explore-trails-hero" />
+          <CTAButton buttonId="button-cta-hero-explorar-trilhas" />
 
           <p className="text-base text-[#0F172A] sm:text-[20px]">
             Conteúdos organizados em trilhas |{" "}

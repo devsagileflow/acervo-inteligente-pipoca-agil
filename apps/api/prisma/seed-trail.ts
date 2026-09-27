@@ -1,7 +1,7 @@
 import { ContentType, PrismaClient } from "@prisma/client";
 
-const AGILIDADE_GERAL_TRAIL_ID = "trail-agilidade-geral";
-const PO_TRAIL_ID = "trail-po-product-owner";
+const AGILIDADE_GERAL_TRAIL_ID = "agilidade-geral";
+const PO_TRAIL_ID = "product-owner";
 
 type SeedVideo = {
   id: string;
@@ -14,7 +14,7 @@ type SeedVideo = {
 
 const AGILIDADE_GERAL_VIDEOS: SeedVideo[] = [
   {
-    id: "video-agilidade-geral-01",
+    id: `${AGILIDADE_GERAL_TRAIL_ID}-video-01`,
     title: "Pílula Ágil — O que não fazer em uma Daily Scrum",
     description:
       "Checklist prático do que evitar numa Daily (atraso, despreparo, falar demais, negatividade) e do que priorizar (objetividade, foco no progresso, colaboração). Reforça que a Daily não serve para resolver problemas nem é status report.",
@@ -23,7 +23,7 @@ const AGILIDADE_GERAL_VIDEOS: SeedVideo[] = [
     position: 1,
   },
   {
-    id: "video-agilidade-geral-02",
+    id: `${AGILIDADE_GERAL_TRAIL_ID}-video-02`,
     title: "Pílula Ágil — O que é Auto-organização numa equipe ágil?",
     description:
       "Define o que é auto-organização de fato — liberdade com responsabilidade, não caos — e como implementar na prática: construir confiança, definir objetivos claros, delegar responsabilidades e remover obstáculos.",
@@ -32,7 +32,7 @@ const AGILIDADE_GERAL_VIDEOS: SeedVideo[] = [
     position: 2,
   },
   {
-    id: "video-agilidade-geral-03",
+    id: `${AGILIDADE_GERAL_TRAIL_ID}-video-03`,
     title: "Scrum como Cascata Disfarçado",
     description:
       'Antipadrões que fazem um time "ágil" reproduzir, na prática, um modelo em cascata: sprints rígidos, documentação excessiva, fases sequenciais e resistência a mudanças — com exemplo real de um projeto institucional que deu errado.',
@@ -41,7 +41,7 @@ const AGILIDADE_GERAL_VIDEOS: SeedVideo[] = [
     position: 3,
   },
   {
-    id: "video-agilidade-geral-04",
+    id: `${AGILIDADE_GERAL_TRAIL_ID}-video-04`,
     title: "Comando e Controle Ágil",
     description:
       'Crítica ao "comando e controle disfarçado de ágil": cerimônias que viram reunião de cobrança, falta de autonomia e microgerenciamento por trás de um verniz de metodologia ágil — e como reverter isso descentralizando decisões.',
@@ -50,7 +50,7 @@ const AGILIDADE_GERAL_VIDEOS: SeedVideo[] = [
     position: 4,
   },
   {
-    id: "video-agilidade-geral-05",
+    id: `${AGILIDADE_GERAL_TRAIL_ID}-video-05`,
     title: "Histórias de Usuário — A Base do Desenvolvimento Ágil",
     description:
       "Como escrever boas histórias de usuário usando os critérios INVEST, com exemplos comparativos claros de história ruim x boa — vaga vs. específica, história gigante vs. fatiada em partes entregáveis.",
@@ -59,7 +59,7 @@ const AGILIDADE_GERAL_VIDEOS: SeedVideo[] = [
     position: 5,
   },
   {
-    id: "video-agilidade-geral-06",
+    id: `${AGILIDADE_GERAL_TRAIL_ID}-video-06`,
     title: "DoR e DoD em Histórias de Usuário",
     description:
       "Diferença entre Definition of Ready (o que uma história precisa ter para começar a ser desenvolvida) e Definition of Done (o que garante que foi entregue com qualidade), com critérios práticos para cada um.",
@@ -68,7 +68,7 @@ const AGILIDADE_GERAL_VIDEOS: SeedVideo[] = [
     position: 6,
   },
   {
-    id: "video-agilidade-geral-07",
+    id: `${AGILIDADE_GERAL_TRAIL_ID}-video-07`,
     title: "Critérios de Aceite — Parte essencial das histórias de usuário",
     description:
       "O que são critérios de aceite, como escrevê-los no formato Given/When/Then, e os erros mais comuns — ser genérico, focar em solução técnica em vez do comportamento esperado pelo usuário.",
@@ -77,7 +77,7 @@ const AGILIDADE_GERAL_VIDEOS: SeedVideo[] = [
     position: 7,
   },
   {
-    id: "video-agilidade-geral-08",
+    id: `${AGILIDADE_GERAL_TRAIL_ID}-video-08`,
     title: "User Story Mapping",
     description:
       "Técnica visual de organizar histórias de usuário ao longo da jornada do usuário, com um exemplo prático completo (sistema de e-mail) mostrando como isso vira insumo direto para o roadmap por sprint.",
@@ -86,7 +86,7 @@ const AGILIDADE_GERAL_VIDEOS: SeedVideo[] = [
     position: 8,
   },
   {
-    id: "video-agilidade-geral-09",
+    id: `${AGILIDADE_GERAL_TRAIL_ID}-video-09`,
     title: "Burndown e Burnup — Essenciais para Gestão de Projetos Ágeis",
     description:
       "Os dois gráficos mais usados para acompanhar progresso em projetos ágeis: como ler cada um, a diferença entre trabalho restante e trabalho concluído, e quando usar um ou outro.",
@@ -95,7 +95,7 @@ const AGILIDADE_GERAL_VIDEOS: SeedVideo[] = [
     position: 9,
   },
   {
-    id: "video-agilidade-geral-10",
+    id: `${AGILIDADE_GERAL_TRAIL_ID}-video-10`,
     title: "Quais são as maiores falácias na Agilidade",
     description:
       "Sete mitos comuns sobre agilidade, incluindo achar que ágil é sinônimo de 'fazer rápido', que serve para qualquer tipo de projeto, e que elimina hierarquia e documentação. Fecha a trilha com uma reflexão crítica sobre o que agilidade não é.",
@@ -127,7 +127,7 @@ const AGILIDADE_GERAL_TRAIL_IMAGE_URL =
 
 const PO_VIDEOS: SeedVideo[] = [
   {
-    id: "video-po-product-owner-01",
+    id: `${PO_TRAIL_ID}-video-01`,
     title: "Pílula Ágil — Product Manager vs. Product Owner",
     description:
       "Comparação direta entre os dois papéis — PM foca em estratégia e mercado, PO foca em backlog e time. Traz exemplos práticos (app de música, ERP, e-commerce) mostrando como cada um atuaria.",
@@ -136,7 +136,7 @@ const PO_VIDEOS: SeedVideo[] = [
     position: 1,
   },
   {
-    id: "video-po-product-owner-02",
+    id: `${PO_TRAIL_ID}-video-02`,
     title: "Pílula Ágil — Product Owner: Atribuições e Habilidades Essenciais",
     description:
       "Introdução conceitual ao papel do PO — o que ele faz no dia a dia e quais habilidades técnicas e comportamentais são esperadas dele.",
@@ -145,7 +145,7 @@ const PO_VIDEOS: SeedVideo[] = [
     position: 2,
   },
   {
-    id: "video-po-product-owner-03",
+    id: `${PO_TRAIL_ID}-video-03`,
     title: "Pílula Ágil — PO preocupado com a organização do time!",
     description:
       "Onde termina a responsabilidade do PO e começa a do Scrum Master — útil pra quem confunde os dois papéis ou está assumindo o cargo pela primeira vez.",
@@ -154,7 +154,7 @@ const PO_VIDEOS: SeedVideo[] = [
     position: 3,
   },
   {
-    id: "video-po-product-owner-04",
+    id: `${PO_TRAIL_ID}-video-04`,
     title: "Product Owner como você nunca viu — convidada Débora Magnago",
     description:
       "Conversa sobre transição de carreira para PO sem vir de TI, com exemplos reais (dentista, enfermeira que viraram PO) e boas práticas de fatiamento de histórias de usuário — como dividir uma funcionalidade grande em pedaços entregáveis.",
@@ -163,7 +163,7 @@ const PO_VIDEOS: SeedVideo[] = [
     position: 4,
   },
   {
-    id: "video-po-product-owner-05",
+    id: `${PO_TRAIL_ID}-video-05`,
     title: "Pílula Ágil — Posso ser Product Owner de vários times?",
     description:
       "Prós, contras e cuidados práticos de um PO cobrir mais de um time ao mesmo tempo — inclui recomendação de não passar de 2-3 times e dicas de delegação.",
@@ -172,7 +172,7 @@ const PO_VIDEOS: SeedVideo[] = [
     position: 5,
   },
   {
-    id: "video-po-product-owner-06",
+    id: `${PO_TRAIL_ID}-video-06`,
     title: 'Tide Cardoso — "Entregar o produto é difícil"',
     description:
       'Crítica ao "PO tirador de pedido" e defesa de que todo problema deve ser medido — fala sobre métricas específicas por tipo de produto e por que um backlog com mais de 20 itens é sinal de alerta.',
@@ -181,7 +181,7 @@ const PO_VIDEOS: SeedVideo[] = [
     position: 6,
   },
   {
-    id: "video-po-product-owner-07",
+    id: `${PO_TRAIL_ID}-video-07`,
     title: "O papel do Product Manager em Inovação",
     description:
       "Erros comuns na escrita de histórias de usuário e técnicas de priorização (MoSCoW, GUT, RICE) — bom para quem já escreve backlog mas quer refinar a prática.",
@@ -190,7 +190,7 @@ const PO_VIDEOS: SeedVideo[] = [
     position: 7,
   },
   {
-    id: "video-po-product-owner-08",
+    id: `${PO_TRAIL_ID}-video-08`,
     title: "Product Owner + IA = Super-Poderes",
     description:
       "Demonstração prática de como usar IA no dia a dia do PO — geração de histórias via BDD, criação de personas por prompt — com alerta sobre os riscos de confiar cegamente na IA.",
@@ -199,7 +199,7 @@ const PO_VIDEOS: SeedVideo[] = [
     position: 8,
   },
   {
-    id: "video-po-product-owner-09",
+    id: `${PO_TRAIL_ID}-video-09`,
     title: "A utilização da IA em Product Discovery",
     description:
       "Como a IA pode acelerar etapas do discovery (análise de feedback, personas, hipóteses), com reflexão crítica sobre riscos de viés e a importância de cruzar múltiplas fontes.",
@@ -278,7 +278,9 @@ export async function seedAgilidadeGeralTrail(prisma: PrismaClient) {
       });
 
       await tx.trailItem.upsert({
-        where: { id: `trail-item-agilidade-geral-${video.position}` },
+        where: {
+          id: `trilha-${AGILIDADE_GERAL_TRAIL_ID}-item-${video.position}`,
+        },
         update: {
           trailId: AGILIDADE_GERAL_TRAIL_ID,
           contentType: ContentType.VIDEO,
@@ -289,7 +291,7 @@ export async function seedAgilidadeGeralTrail(prisma: PrismaClient) {
           deletedAt: null,
         },
         create: {
-          id: `trail-item-agilidade-geral-${video.position}`,
+          id: `trilha-${AGILIDADE_GERAL_TRAIL_ID}-item-${video.position}`,
           trailId: AGILIDADE_GERAL_TRAIL_ID,
           contentType: ContentType.VIDEO,
           contentId: video.id,
@@ -350,7 +352,7 @@ export async function seedPoProductOwnerTrail(prisma: PrismaClient) {
       });
 
       await tx.trailItem.upsert({
-        where: { id: `trail-item-po-product-owner-${video.position}` },
+        where: { id: `trilha-${PO_TRAIL_ID}-item-${video.position}` },
         update: {
           trailId: PO_TRAIL_ID,
           contentType: ContentType.VIDEO,
@@ -361,7 +363,7 @@ export async function seedPoProductOwnerTrail(prisma: PrismaClient) {
           deletedAt: null,
         },
         create: {
-          id: `trail-item-po-product-owner-${video.position}`,
+          id: `trilha-${PO_TRAIL_ID}-item-${video.position}`,
           trailId: PO_TRAIL_ID,
           contentType: ContentType.VIDEO,
           contentId: video.id,
