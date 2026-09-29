@@ -24,6 +24,14 @@ type Props = {
 
 const INTERSTITIAL_AFTER_INDEX = 1;
 
+// Posição das perguntas no formulário (ordenadas por `position`)
+const RATING_QUESTION_INDEX = 0; // "Como você avalia a sua experiência até agora?"
+const REASON_QUESTION_INDEX = 1; // "Sua avaliação nos ajudará a aprimorar... motivo dessa nota?"
+
+// Notas até este valor (1 = Péssimo, 2 = Ruim) passam pela pergunta do motivo.
+// 3 = Regular, 4 = Bom e 5 = Excelente pulam direto para as demais perguntas.
+const LOW_RATING_MAX = 2;
+
 type Phase = "question" | "interstitial";
 
 export const RenderAPIForm = ({ feedback_form, contentType, contentId, onClose }: Props) => {
@@ -74,6 +82,19 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId, onClose }
       return;
     }
 
+    if (questionIndex === RATING_QUESTION_INDEX) {
+      const rating = Number(getValues(`answers.${RATING_QUESTION_INDEX}.value`) ?? 0);
+
+      if (rating > LOW_RATING_MAX) {
+        // A pergunta do motivo é obrigatória; como ela foi pulada, deixa de ser exigida
+        // na validação final do formulário.
+        setValue(`answers.${REASON_QUESTION_INDEX}.isRequired`, false);
+        setQuestionIndex(REASON_QUESTION_INDEX);
+        setPhase("interstitial");
+        return;
+      }
+    }
+
     if (questionIndex === INTERSTITIAL_AFTER_INDEX) {
       setPhase("interstitial");
       return;
@@ -97,6 +118,7 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId, onClose }
         return (
           <>
             <Textarea
+              key={question.id}
               placeholder="Escreva aqui sua resposta"
               className="h-24 w-full text-xs sm:h-40 sm:text-base"
               {...register(`answers.${index}.value`)}
@@ -110,7 +132,7 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId, onClose }
         );
       case "STARS":
         return (
-          <div>
+          <div key={question.id}>
             <RatingControlled
               initialValue={
                 getValues(`answers.${index}.value`)
@@ -136,7 +158,7 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId, onClose }
         );
       case "MULTIPLE_CHOICE":
         return (
-          <div className="space-y-2">
+          <div key={question.id} className="space-y-2">
             {question.options?.map((option, optionIndex) => (
               <label key={optionIndex} className="flex cursor-pointer items-center gap-3">
                 <input type="radio" {...register(`answers.${index}.optionIds`)} value={option.id} />
@@ -147,7 +169,7 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId, onClose }
         );
       case "SINGLE_CHOICE":
         return (
-          <div className="space-y-2">
+          <div key={question.id} className="space-y-2">
             {question.options?.map((option, optionIndex) => (
               <label key={optionIndex} className="flex cursor-pointer items-center gap-3">
                 <input type="radio" {...register(`answers.${index}.optionId`)} value={option.id} />
@@ -158,13 +180,13 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId, onClose }
         );
       case "SCALE_0_10":
         return (
-          <div className="w-full px-2">
+          <div key={question.id} className="w-full px-2">
             <input type="range" min="0" max="10" className="w-full" />
           </div>
         );
       case "LIKE_DISLIKE":
         return (
-          <div className="flex justify-center gap-3">
+          <div key={question.id} className="flex justify-center gap-3">
             <button type="button" className="px-4 py-2 text-sm sm:px-6 sm:text-base">
               Like
             </button>
@@ -245,7 +267,10 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId, onClose }
           </div>
         </div>
       ) : question ? (
-        <div className="flex flex-col gap-3 rounded-2xl border border-amber-400/60 bg-[#0c1225] p-4 sm:gap-6 sm:rounded-3xl sm:p-10">
+        <div
+          key={question.id}
+          className="flex flex-col gap-3 rounded-2xl border border-amber-400/60 bg-[#0c1225] p-4 sm:gap-6 sm:rounded-3xl sm:p-10"
+        >
           {showStepperCounter && (
             <span className="text-center text-xs text-white/60 sm:text-sm">
               {stepperPosition}/{stepperTotal}
