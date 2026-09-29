@@ -24,12 +24,9 @@ type Props = {
 
 const INTERSTITIAL_AFTER_INDEX = 1;
 
-// Posição das perguntas no formulário (ordenadas por `position`)
-const RATING_QUESTION_INDEX = 0; // "Como você avalia a sua experiência até agora?"
-const REASON_QUESTION_INDEX = 1; // "Sua avaliação nos ajudará a aprimorar... motivo dessa nota?"
+const RATING_QUESTION_INDEX = 0; 
+const REASON_QUESTION_INDEX = 1; 
 
-// Notas até este valor (1 = Péssimo, 2 = Ruim) passam pela pergunta do motivo.
-// 3 = Regular, 4 = Bom e 5 = Excelente pulam direto para as demais perguntas.
 const LOW_RATING_MAX = 2;
 
 type Phase = "question" | "interstitial";
@@ -86,8 +83,6 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId, onClose }
       const rating = Number(getValues(`answers.${RATING_QUESTION_INDEX}.value`) ?? 0);
 
       if (rating > LOW_RATING_MAX) {
-        // A pergunta do motivo é obrigatória; como ela foi pulada, deixa de ser exigida
-        // na validação final do formulário.
         setValue(`answers.${REASON_QUESTION_INDEX}.isRequired`, false);
         setQuestionIndex(REASON_QUESTION_INDEX);
         setPhase("interstitial");
@@ -217,10 +212,22 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId, onClose }
             />
           </div>
           <p className="text-center text-sm font-bold text-[#F1F5F9] sm:text-2xl">
-            Recebemos suas respostas com <span className="text-[#FBBF24]">sucesso</span>!
+            Recebemos suas respostas com <span className="text-[#FBBF24]">sucesso</span>
           </p>
           <p className="text-center text-xs text-[#F1F5F9] sm:text-base">
-            Seu feedback será considerado em nossas próximas melhorias.
+            Seu acesso aos próximos conteúdos foi liberado. 
+          </p>
+          <p className="text-center text-xs text-[#F1F5F9] sm:text-base">
+            Quer conhecer mais sobre o Pipoca Ágil ou conversar com a gente?{" "}
+            <a
+              href="https://pipocaagil.com.br/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-bold"
+            >
+              SAIBA MAIS
+            </a>
+            .
           </p>
           <button
             onClick={onClose}
