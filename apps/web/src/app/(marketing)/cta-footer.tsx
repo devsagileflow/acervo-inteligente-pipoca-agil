@@ -40,14 +40,8 @@ export const CTAFooter = () => {
               </svg>
             </a>
           </div>
-          <div className="flex justify-center gap-3 py-5 text-center text-sm">
-            <Link href="#" className="underline">
-              POLÍTICA DE PRIVACIDADE
-            </Link>
-            •
-            <Link href="#" className="underline">
-              TERMOS DE USO
-            </Link>
+          <div className="flex justify-center gap-3 py-5 text-center text-xs sm:text-sm">
+            <p>© Pipoca Ágil 2026 - Todos os direitos reservados.</p>
           </div>
         </article>
       </div>

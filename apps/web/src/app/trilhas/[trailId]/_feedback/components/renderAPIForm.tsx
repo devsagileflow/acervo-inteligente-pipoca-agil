@@ -126,8 +126,9 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId, onClose }
           </>
         );
       case "STARS":
-        return (
-          <div key={question.id}>
+      return (
+        <div key={question.id} className="flex w-full justify-center">
+          <div className="origin-center scale-[0.8] sm:scale-100">
             <RatingControlled
               initialValue={
                 getValues(`answers.${index}.value`)
@@ -144,13 +145,14 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId, onClose }
               }
               precision={1}
             />
-            {errors.answers?.[index]?.message && (
-              <p className="mt-2 text-center text-xs text-red-500 sm:text-sm">
-                {errors.answers[index].message}
-              </p>
-            )}
           </div>
-        );
+          {errors.answers?.[index]?.message && (
+            <p className="mt-2 text-center text-xs text-red-500 sm:text-sm">
+              {errors.answers[index].message}
+            </p>
+          )}
+        </div>
+      );
       case "MULTIPLE_CHOICE":
         return (
           <div key={question.id} className="space-y-2">
