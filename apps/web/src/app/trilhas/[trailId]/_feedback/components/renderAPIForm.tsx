@@ -24,10 +24,10 @@ type Props = {
 
 const INTERSTITIAL_AFTER_INDEX = 1;
 
-const RATING_QUESTION_INDEX = 0; 
-const REASON_QUESTION_INDEX = 1; 
+const RATING_QUESTION_INDEX = 0;
+const REASON_QUESTION_INDEX = 1;
 
-const LOW_RATING_MAX = 2;
+const LOW_RATING_MAX = 3;
 
 type Phase = "question" | "interstitial";
 
@@ -215,7 +215,7 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId, onClose }
             Recebemos suas respostas com <span className="text-[#FBBF24]">sucesso</span>
           </p>
           <p className="text-center text-xs text-[#F1F5F9] sm:text-base">
-            Seu acesso aos próximos conteúdos foi liberado. 
+            Seu acesso aos próximos conteúdos foi liberado.
           </p>
           <p className="text-center text-xs text-[#F1F5F9] sm:text-base">
             Quer conhecer mais sobre o Pipoca Ágil ou conversar com a gente?{" "}
@@ -260,7 +260,10 @@ export const RenderAPIForm = ({ feedback_form, contentType, contentId, onClose }
           </p>
           <div className="flex w-full flex-col items-center justify-between gap-2 sm:flex-row sm:gap-4">
             <button
-              onClick={onClose}
+              onClick={() => {
+                handleSubmit(onSubmit)();
+                onClose();
+              }}
               className="w-full cursor-pointer rounded-4xl border border-[#FBBF24] px-3 py-1.5 sm:w-auto sm:px-6"
             >
               <span className="text-xs font-bold text-[#FBBF24] sm:text-sm">CONTINUAR TRILHA</span>

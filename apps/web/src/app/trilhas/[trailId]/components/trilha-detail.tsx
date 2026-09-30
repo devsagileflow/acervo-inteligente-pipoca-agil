@@ -5,9 +5,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
 import type { FeedbackForm, Trail, TrailItem } from "@acervo/schemas";
-import { apiGet } from "@/lib/api-client";
 import { trackButtonClick } from "@/lib/analytics";
-import { useApiRequest } from "@/lib/use-api-request";
 import { extractYoutubeId, formatMinutes, getThumbnailUrl } from "./utils";
 import Link from "next/link";
 import { TrilhasHeader } from "../../components/trilhas-header";
@@ -17,6 +15,7 @@ import { RenderAPIForm } from "../../[trailId]/_feedback/components/renderAPIFor
 
 type TrilhaDetailProps = {
   trail: Trail;
+  feedbackForm?: FeedbackForm;
 };
 
 const subscribeToStorage = (callback: () => void) => {
@@ -24,7 +23,7 @@ const subscribeToStorage = (callback: () => void) => {
   return () => window.removeEventListener("storage", callback);
 };
 
-export function TrilhaDetail({ trail }: TrilhaDetailProps) {
+export function TrilhaDetail({ trail, feedbackForm }: TrilhaDetailProps) {
   const items = useMemo(
     () =>
       (trail.items ?? [])
@@ -51,15 +50,6 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
   );
 
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
-  const {
-    data: feedbackForm,
-    error: feedbackError,
-    loading: feedbackLoading,
-  } = useApiRequest<FeedbackForm>(
-    () => apiGet<FeedbackForm>("/api/feedback-forms/feedback-form-global-trail"),
-    [isFeedbackOpen],
-    isFeedbackOpen,
-  );
 
   const handleFeedbackOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
     const buttonId = e.currentTarget.id;
@@ -248,15 +238,11 @@ export function TrilhaDetail({ trail }: TrilhaDetailProps) {
                 contentId={trail.id}
                 onClose={handleFeedbackClose}
               />
-            ) : feedbackError ? (
+            ) : (
               <div className="rounded-3xl border border-amber-400/60 bg-[#0c1225] p-10 text-center text-white">
                 Não foi possível carregar o formulário.
               </div>
-            ) : feedbackLoading ? (
-              <div className="rounded-3xl border border-amber-400/60 bg-[#0c1225] p-10 text-center text-white">
-                Carregando...
-              </div>
-            ) : null}
+            )}
           </div>
         </div>
       )}

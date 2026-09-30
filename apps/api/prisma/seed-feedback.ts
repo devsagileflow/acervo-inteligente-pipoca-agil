@@ -45,21 +45,21 @@ const GLOBAL_TRAIL_FORM: SeedForm = {
       questionType: QuestionType.TEXT,
       label:
         "Sua avaliação nos ajudará a aprimorar o nosso produto! Poderia nos contar o motivo dessa nota?",
-      isRequired: true,
+      isRequired: false,
       position: 2,
     },
     {
       id: "feedback-question-global-trail-03",
       questionType: QuestionType.TEXT,
       label: "O que mais chamou sua atenção?",
-      isRequired: true,
+      isRequired: false,
       position: 3,
     },
     {
       id: "feedback-question-global-trail-04",
       questionType: QuestionType.TEXT,
       label: "Teve algo confuso ou difícil de entender?",
-      isRequired: true,
+      isRequired: false,
       position: 4,
     },
     {
@@ -67,14 +67,14 @@ const GLOBAL_TRAIL_FORM: SeedForm = {
       questionType: QuestionType.TEXT,
       label:
         "Você utilizaria esta plataforma para aprender Agilidade? Por quê?",
-      isRequired: true,
+      isRequired: false,
       position: 5,
     },
     {
       id: "feedback-question-global-trail-06",
       questionType: QuestionType.TEXT,
       label: "O que poderíamos melhorar?",
-      isRequired: true,
+      isRequired: false,
       position: 6,
     },
   ],
