@@ -44,7 +44,7 @@ export const FeedbackFormCard = ({ feedbackForm, feedbackResponses }: Props) => 
           .flatMap((response) => response.answers)
           .filter((answer) => answer && answer.questionId === question.id)
           .map((answer) => (answer && String(answer.value)) ?? "")
-          .filter((answer) => answer !== "");
+          .filter((answer) => answer !== "null" && answer !== "");
         return { questionLabel: question.label, answers: questionAnswers };
       }) || [];
 
